@@ -11,10 +11,10 @@
         <Border  Grid.Row="0" Background="{StaticResource MainColor}">
             <Viewbox>
                 <StackPanel Padding="3,3,3,3">
-                    <TextBlock TextWrapping="Wrap" Text="Tetris!" SelectionChanged="TextBlock_SelectionChanged" FontWeight="Bold" FontFamily="Cooper Black" FocusVisualPrimaryBrush="{StaticResource TextColor}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
-                    <TextBlock TextWrapping="Wrap" Text="With multithreading!" SelectionChanged="TextBlock_SelectionChanged" FontWeight="Bold" FontFamily="Cooper Black" FocusVisualPrimaryBrush="{StaticResource TextColor}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="6" RenderTransformOrigin="0.5,0.5" Margin="80,0,0,0">
+                    <TextBlock Style="{StaticResource HeaderTextBlockStyle}" Text="{StaticResource GameTItle}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource TextColor}" FontWeight="Bold"/>
+                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{StaticResource GameSubtitle}" Foreground="{StaticResource TextColor}" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="130,0,0,0" FontSize="14">
                         <TextBlock.RenderTransform>
-                            <CompositeTransform Rotation="-15" TranslateX="0" TranslateY="-10"/>
+                            <CompositeTransform Rotation="-15" TranslateY="-15"/>
                         </TextBlock.RenderTransform>
                     </TextBlock>
                 </StackPanel>
@@ -22,17 +22,24 @@
         </Border>
         <Viewbox MaxHeight="500" Grid.RowSpan="3">
             <controls:UniformGrid Rows="4" Columns="1" RowSpacing="20" VerticalAlignment="Stretch">
-                <Button Click="NewGameButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}" VerticalAlignment="Stretch">New Game</Button>
-                <Button Click="ReplayButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}" VerticalAlignment="Stretch">Replays</Button>
-                <Button Click="FullscreenButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}" VerticalAlignment="Stretch">Fullscreen / Windowed</Button>
-                <Button Click="QuitButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}" VerticalAlignment="Stretch">Quit Game</Button>
+                <Button Click="NewGameButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}" VerticalAlignment="Stretch">
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{StaticResource NewGameOption}"/>
+                </Button>
+                <Button Click="ReplayButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}" VerticalAlignment="Stretch">
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{StaticResource ViewReplaysOption}"/>
+                </Button>
+                <Button Click="FullscreenButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}" VerticalAlignment="Stretch" FontFamily="{StaticResource DefaultFont}">
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{StaticResource ToggleFullscreenOption}"/>
+                </Button>
+                <Button Click="QuitButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}" VerticalAlignment="Stretch">
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{StaticResource QuitGameOption}"/>
+                </Button>
             </controls:UniformGrid>
         </Viewbox>
         <Border MaxHeight="75" Grid.Row="4" Background="{StaticResource MainColor}" VerticalAlignment="Bottom">
             <Viewbox>
                 <StackPanel Padding="3,3,3,3">
-                    <TextBlock TextWrapping="Wrap" Text="Created by Bram Buist, Daniël Roosken &amp; Dennis Rozema " SelectionChanged="TextBlock_SelectionChanged" FontSize="22" FontWeight="Normal" FontFamily="Cooper Black" FocusVisualPrimaryBrush="{StaticResource TextColor}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock TextWrapping="Wrap" Text="for the course &quot;Threading in c#&quot; at NHLStenden " SelectionChanged="TextBlock_SelectionChanged" FontSize="22" FontWeight="Normal" FontFamily="Cooper Black" FocusVisualPrimaryBrush="{StaticResource TextColor}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{StaticResource Credits}" Foreground="{StaticResource TextColor}" TextAlignment="Center"/>
                 </StackPanel>
             </Viewbox>
         </Border>
