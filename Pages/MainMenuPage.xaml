@@ -1,6 +1,7 @@
 ﻿<Page
+    KeyDown="Page_KeyDown"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    x:Class="Tetris.MainMenuPage"
+    x:Class="Tetris.Pages.MainMenuPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,7 +9,7 @@
     mc:Ignorable="d" Background="{StaticResource AltColor}">
 
     <controls:UniformGrid Rows="5" RowSpacing="50" Columns="1">
-        <Border  Grid.Row="0" Background="{StaticResource MainColor}">
+        <Border MaxHeight="{StaticResource MaxHeaderHeight}" Grid.Row="0" Background="{StaticResource MainColor}" VerticalAlignment="Top">
             <Viewbox>
                 <StackPanel Padding="3,3,3,3">
                     <TextBlock Style="{StaticResource HeaderTextBlockStyle}" Text="{StaticResource GameTItle}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource TextColor}" FontWeight="Bold"/>
@@ -21,7 +22,7 @@
             </Viewbox>
         </Border>
         <Viewbox MaxHeight="500" Grid.RowSpan="3">
-            <controls:UniformGrid Rows="4" Columns="1" RowSpacing="20" VerticalAlignment="Stretch">
+            <controls:UniformGrid x:Name="ButtonGrid" Rows="4" Columns="1" RowSpacing="20" VerticalAlignment="Stretch">
                 <Button Click="NewGameButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}" VerticalAlignment="Stretch">
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{StaticResource NewGameOption}"/>
                 </Button>
@@ -29,14 +30,14 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{StaticResource ViewReplaysOption}"/>
                 </Button>
                 <Button Click="FullscreenButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}" VerticalAlignment="Stretch" FontFamily="{StaticResource DefaultFont}">
-                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{StaticResource ToggleFullscreenOption}"/>
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{StaticResource FullscreenToggleOption}" Height="19" VerticalAlignment="Bottom"/>
                 </Button>
                 <Button Click="QuitButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}" VerticalAlignment="Stretch">
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{StaticResource QuitGameOption}"/>
                 </Button>
             </controls:UniformGrid>
         </Viewbox>
-        <Border MaxHeight="75" Grid.Row="4" Background="{StaticResource MainColor}" VerticalAlignment="Bottom">
+        <Border MaxHeight="{StaticResource MaxFooterHeight}" Grid.Row="4" Background="{StaticResource MainColor}" VerticalAlignment="Bottom">
             <Viewbox>
                 <StackPanel Padding="3,3,3,3">
                     <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{StaticResource Credits}" Foreground="{StaticResource TextColor}" TextAlignment="Center"/>
