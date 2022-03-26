@@ -1,0 +1,48 @@
+﻿<Page
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    x:Class="Tetris.MainMenuPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Background="{StaticResource AltColor}">
+
+    <controls:UniformGrid Rows="5" Columns="1">
+        <Border  Grid.Row="0" Background="{StaticResource MainColor}">
+            <Viewbox>
+                <StackPanel Padding="3,3,3,3">
+                    <TextBlock TextWrapping="Wrap" Text="Tetris!" SelectionChanged="TextBlock_SelectionChanged" FontWeight="Bold" FontFamily="Cooper Black" FocusVisualPrimaryBrush="{StaticResource TextColor}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+                    <TextBlock TextWrapping="Wrap" Text="With multithreading!" SelectionChanged="TextBlock_SelectionChanged" FontWeight="Bold" FontFamily="Cooper Black" FocusVisualPrimaryBrush="{StaticResource TextColor}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="6" RenderTransformOrigin="0.5,0.5" Margin="80,0,0,0">
+                        <TextBlock.RenderTransform>
+                            <CompositeTransform Rotation="-15" TranslateX="0" TranslateY="-10"/>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </StackPanel>
+            </Viewbox>
+        </Border>
+        <Grid Grid.RowSpan="3" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" MaxHeight="150"/>
+                <RowDefinition Height="*" MaxHeight="150"/>
+                <RowDefinition Height="*" MaxHeight="150"/>
+            </Grid.RowDefinitions>
+            <Viewbox>
+                <Button Click="NewGameButton_Click" Margin="0,10,0,10" Width="100" HorizontalAlignment="Center" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}">New Game</Button>
+            </Viewbox>
+            <Viewbox Grid.Row="1">
+                <Button Click="ReplayButton_Click" HorizontalAlignment="Center" Width="100" Margin="0,10,0,10" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}">Replays</Button>
+            </Viewbox>
+            <Viewbox Grid.Row="2">
+                <Button Click="QuitButton_Click" HorizontalAlignment="Center" Width="100" Margin="0,10,0,10" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}">Quit Game</Button>
+            </Viewbox>
+        </Grid>
+        <Border MaxHeight="75" Grid.Row="4" Background="{StaticResource MainColor}" VerticalAlignment="Bottom">
+            <Viewbox>
+                <StackPanel Padding="3,3,3,3">
+                    <TextBlock TextWrapping="Wrap" Text="Created by Bram Buist, Daniël Roosken &amp; Dennis Rozema " SelectionChanged="TextBlock_SelectionChanged" FontSize="22" FontWeight="Normal" FontFamily="Cooper Black" FocusVisualPrimaryBrush="{StaticResource TextColor}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock TextWrapping="Wrap" Text="for the course &quot;Threading in c#&quot; at NHLStenden " SelectionChanged="TextBlock_SelectionChanged" FontSize="22" FontWeight="Normal" FontFamily="Cooper Black" FocusVisualPrimaryBrush="{StaticResource TextColor}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Viewbox>
+        </Border>
+    </controls:UniformGrid>
+</Page>

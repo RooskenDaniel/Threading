@@ -20,11 +20,31 @@ namespace Tetris
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MainMenuPage : Page
     {
-        public MainPage()
+        public MainMenuPage()
         {
             this.InitializeComponent();
+        }
+
+        void NewGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        void ReplayButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Exit();
+        }
+
+        void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

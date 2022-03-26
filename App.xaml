@@ -3,5 +3,17 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Tetris">
-
+    <Application.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="MainColor" Color="#FF3EA2EF"/>
+            <SolidColorBrush x:Key="TextColor" Color="White"/>
+            <SolidColorBrush x:Key="AltColor" Color="#FF92C6FF"/>
+            <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#FF92C6FF"/>
+            <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="#FF3EA2EF"/>
+            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="White"/>
+            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FF3EA2EF"/>
+            <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="#FF3EA2EF"/>
+            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="White"/>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>
