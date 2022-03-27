@@ -33,7 +33,7 @@ namespace Tetris.Pages
         bool gameLoopActive = true;
         private readonly Border[,] borders;
 
-        //private readonly PlayField playField;
+        private readonly PlayField playField;
         private double gameTime = 0;
         public GamePage()
         {
@@ -48,7 +48,7 @@ namespace Tetris.Pages
             //create the playfield borders and model
             borders = new Border[PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT];
             AddPlayFieldBorders(PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT);
-            //playField = new PlayField(PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT);
+            playField = new PlayField(PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT);
 
             //register for inputs
             Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
@@ -135,7 +135,7 @@ namespace Tetris.Pages
         //runs on logic thread
         private void Tick()
         {
-            //playField.Tick(gameTime);
+            playField.Tick(gameTime);
         }
 
         //runs on UI (main) thread
@@ -145,7 +145,7 @@ namespace Tetris.Pages
             {
                 for (int y = 0; y < PLAYFIELD_HEIGHT; y++)
                 {
-                    //SetBorderColor(x, y, playField.getCellAppearance(x, y));
+                    SetBorderColor(x, y, playField.getCellAppearance(x, y));
                 }
             }
         }

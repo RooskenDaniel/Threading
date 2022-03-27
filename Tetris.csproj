@@ -124,7 +124,6 @@
     <Compile Include="Models\Piece.cs" />
     <Compile Include="Models\PieceGenerator.cs" />
     <Compile Include="Models\PieceShape.cs" />
-    <Compile Include="Models\PlayerInputs.cs" />
     <Compile Include="Models\PlayField.cs" />
     <Compile Include="Pages\MainMenuPage.xaml.cs">
       <DependentUpon>MainMenuPage.xaml</DependentUpon>
