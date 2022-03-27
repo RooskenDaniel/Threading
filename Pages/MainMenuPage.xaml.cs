@@ -34,7 +34,7 @@ namespace Tetris.Pages
 
         void NewGameButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.Frame.Navigate(typeof(GamePage));
+            this.Frame.Navigate(typeof(GamePage));
         }
 
         void ReplayButton_Click(object sender, RoutedEventArgs e)
@@ -95,6 +95,9 @@ namespace Tetris.Pages
                         }
                     }
                     setFocus();
+                    break;
+                case VirtualKey.Escape:
+                    Application.Current.Exit();
                     break;
                 default: break;
             }
