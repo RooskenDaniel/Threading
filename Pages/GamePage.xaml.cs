@@ -21,7 +21,6 @@ using Windows.UI.Xaml.Navigation;
 //todo:
 //Clean code + convert strings to resources
 //Move gameloop / threads
-//fix glitchy main menu transition
 //Game over state
 
 namespace Tetris.Pages
@@ -205,15 +204,7 @@ namespace Tetris.Pages
                 switch (e.VirtualKey)
                 {
                     case VirtualKey.Escape:
-                        if (Frame.CanGoBack)
-                        {
-                            Frame.GoBack();
-                        }
-                        else
-                        {
-                            Frame.Navigate(typeof(MainMenuPage));
-                        }
-
+                        Frame.Navigate(typeof(MainMenuPage));
                         break;
                     case VirtualKey.Left:
                     case VirtualKey.A:
