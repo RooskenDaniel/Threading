@@ -29,7 +29,8 @@ namespace Tetris.Pages
         private const int PLAYFIELD_HEIGHT = 20;
         private const int PLAYFIELD_WIDTH = 10;
         private const int MIN_LOOP_TIME_MS = 7;
-        private const double SIDE_BAR_RATIO = 0.5;
+        private const double PREVIEW_BARS_RATIO = 0.25;
+        private const double STAT_BAR_RATIO = 0.5;
         bool gameLoopActive = true;
         private readonly Border[,] borders;
 
@@ -40,10 +41,6 @@ namespace Tetris.Pages
             this.InitializeComponent();
             //set the inital playing field size
             setMidCellSize();
-
-            //set sidebar size relative to the playfield
-            ColumnDefinition sideBarCol = this.FindName("sideBarColumn") as ColumnDefinition;
-            sideBarCol.Width = new GridLength(SIDE_BAR_RATIO, GridUnitType.Star);
 
             //create the playfield borders and model
             borders = new Border[PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT];
@@ -220,23 +217,31 @@ namespace Tetris.Pages
         {
             RowDefinition midRow = this.FindName("midRow") as RowDefinition;
             ColumnDefinition midCol = this.FindName("midColumn") as ColumnDefinition;
-            double ratio = (double)PLAYFIELD_HEIGHT / ((double)PLAYFIELD_WIDTH * (1 + SIDE_BAR_RATIO));
+
+            double ratio = (double)PLAYFIELD_HEIGHT / ((double)PLAYFIELD_WIDTH * ((PREVIEW_BARS_RATIO * 2) + STAT_BAR_RATIO + 1));
             double windowHeight = ((Frame)Window.Current.Content).ActualHeight;
             double windowWidth = ((Frame)Window.Current.Content).ActualWidth;
             if (windowHeight / ratio > windowWidth)
             {
                 //use width
-                midCol.Width = new GridLength(windowWidth, GridUnitType.Star);
+                midCol.Width = new GridLength(windowWidth, GridUnitType.Pixel);
                 midRow.Height = new GridLength(windowWidth * ratio, GridUnitType.Pixel);
 
             }
             else
             {
                 //use height
-                midRow.Height = new GridLength(windowHeight, GridUnitType.Star);
+                midRow.Height = new GridLength(windowHeight, GridUnitType.Pixel);
                 midCol.Width = new GridLength(windowHeight / ratio, GridUnitType.Pixel);
             }
+        }
 
+        //binding with ActualHeight or ActualWidth doesn't work in UWP
+        //So we need to use a sizeChanged handler to mantain it's aspect ratio
+        private void preview_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            PiecePreviewUserControl preview = sender as PiecePreviewUserControl;
+            preview.Height = preview.ActualWidth;
         }
     }
 }

@@ -7,7 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{StaticResource AltColor}">
+    Background="{StaticResource MainColor}">
 
 
     <Grid>
@@ -23,32 +23,63 @@
         </Grid.RowDefinitions>
         <Grid Grid.Column ="1" Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition x:Name="sideBarColumn"/>
+                <ColumnDefinition Width="0.25*" x:Name="HeldPieceColumn"/>
+                <ColumnDefinition Width="1*" x:Name="PlayFieldColumn"/>
+                <ColumnDefinition Width="0.25*" x:Name="UpcomingBarColumn"/>
+                <ColumnDefinition Width="0.5*" x:Name="statBarColumn"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column ="0" Background="Black" x:Name="PlayAreaGrid" Width="{Binding Height, RelativeSource={RelativeSource Self}}" />
-            <Border Grid.Column ="1" Background="{StaticResource MainColor}" Padding="5,5,5,5">
-                <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-                    <Viewbox MaxHeight="60">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="ScoreLabel" TextWrapping="Wrap" Text="Score:" Foreground="White" FontSize="32"/>
-                            <TextBlock x:Name="ScoreValue" TextWrapping="Wrap" Text="00000" Foreground="White" FontSize="32" Margin="10,0,0,0" />
-                        </StackPanel>
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.1*"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="0.1*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="1"  Spacing="10" Padding="0,0,0,0">
+                    <Viewbox>
+                        <TextBlock Text="Held" HorizontalAlignment="Center" Foreground="{StaticResource TextColor}"/>
                     </Viewbox>
-                    <Viewbox MaxHeight="60">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <TextBlock x:Name="LinesLabel" TextWrapping="Wrap" Text="Lines:" Foreground="White" FontSize="32" HorizontalAlignment="Left"/>
-                            <TextBlock x:Name="LinesValue" TextWrapping="Wrap" Text="00000" Foreground="White" FontSize="32" Margin="10,0,0,0" />
-                        </StackPanel>
-                    </Viewbox>
-                    <Viewbox MaxHeight="60">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="PiecesLabel" TextWrapping="Wrap" Text="Pieces:" Foreground="White" FontSize="32" HorizontalAlignment="Left"/>
-                            <TextBlock x:Name="PiecesValue" TextWrapping="Wrap" Text="00000" Foreground="White" FontSize="32" Margin="10,0,0,0" HorizontalAlignment="Left" />
-                        </StackPanel>
-                    </Viewbox>
+                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="previewHeld"/>
                 </StackPanel>
-            </Border>
+            </Grid>
+            <Grid Grid.Column ="1" Background="Black" x:Name="PlayAreaGrid"/>
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.1*"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="0.1*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="1" Spacing="10" Padding="0,0,0,0">
+                    <Viewbox>
+                        <TextBlock Text="Upcoming" HorizontalAlignment="Center" Foreground="{StaticResource TextColor}"/>
+                    </Viewbox>
+                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview1"/>
+                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview2"/>
+                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview3"/>
+                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview4"/>
+                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview5"/>
+                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview6"/>
+                </StackPanel>
+            </Grid>
+            <StackPanel Grid.Column ="3"  Padding="5,5,5,5" Orientation="Vertical" VerticalAlignment="Stretch">
+                <Viewbox MaxHeight="60">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="ScoreLabel" TextWrapping="Wrap" Text="Score:" Foreground="White" FontSize="32"/>
+                        <TextBlock x:Name="ScoreValue" TextWrapping="Wrap" Text="00000" Foreground="White" FontSize="32" Margin="10,0,0,0" />
+                    </StackPanel>
+                </Viewbox>
+                <Viewbox MaxHeight="60">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock x:Name="LinesLabel" TextWrapping="Wrap" Text="Lines:" Foreground="White" FontSize="32" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="LinesValue" TextWrapping="Wrap" Text="00000" Foreground="White" FontSize="32" Margin="10,0,0,0" />
+                    </StackPanel>
+                </Viewbox>
+                <Viewbox MaxHeight="60">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="PiecesLabel" TextWrapping="Wrap" Text="Pieces:" Foreground="White" FontSize="32" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="PiecesValue" TextWrapping="Wrap" Text="00000" Foreground="White" FontSize="32" Margin="10,0,0,0" HorizontalAlignment="Left" />
+                    </StackPanel>
+                </Viewbox>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>
