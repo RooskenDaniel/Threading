@@ -168,6 +168,42 @@ namespace Tetris.Pages
                         }
 
                         break;
+                    case VirtualKey.Left:
+                    case VirtualKey.A:
+                    case VirtualKey.GamepadDPadLeft:
+                    case VirtualKey.GamepadLeftThumbstickLeft:
+                        playField.MovePieceLeft();
+                        break;
+                    case VirtualKey.Right:
+                    case VirtualKey.D:
+                    case VirtualKey.GamepadDPadRight:
+                    case VirtualKey.GamepadLeftThumbstickRight:
+                        playField.MovePieceRight();
+                        break;
+                    case VirtualKey.Up:
+                    case VirtualKey.W:
+                    case VirtualKey.GamepadDPadUp:
+                    case VirtualKey.GamepadLeftThumbstickUp:
+                        playField.HardDrop();
+                        break;
+                    case VirtualKey.Down:
+                    case VirtualKey.S:
+                    case VirtualKey.GamepadDPadDown:
+                    case VirtualKey.GamepadLeftThumbstickDown:
+                        playField.SoftDrop();
+                        break;
+                    case VirtualKey.Q:
+                    case VirtualKey.GamepadA:
+                        playField.RotatePieceRight();
+                        break;
+                    case VirtualKey.E:
+                    case VirtualKey.GamepadB:
+                        playField.RotatePieceLeft();
+                        break;
+                    case VirtualKey.Space:
+                    case VirtualKey.GamepadRightShoulder:
+                        playField.HoldPiece();
+                        break;
                 }
             }
         }

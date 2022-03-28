@@ -56,6 +56,41 @@ namespace Tetris
             }
         }
 
+        public void MovePieceRight()
+        {
+            //todo
+        }
+
+        public void MovePieceLeft()
+        {
+            //todo
+        }
+
+        public void RotatePieceLeft()
+        {
+            //todo
+        }
+
+        public void RotatePieceRight()
+        {
+            //todo
+        }
+
+        public void SoftDrop()
+        {
+            //todo
+        }
+
+        public void HardDrop()
+        {
+            //todo
+        }
+
+        public void HoldPiece()
+        {
+            //todo
+        }
+
         private void spawnNextPiece()
         {
             //handle queue
@@ -106,10 +141,10 @@ namespace Tetris
                 LandPiece(piece);
             }
         }
-
         private void EndGame()
         {
-
+            //todo
         }
+
     }
 }
