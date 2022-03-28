@@ -7,6 +7,8 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -63,10 +65,17 @@ namespace Tetris
             {
                 if (rootFrame.Content == null)
                 {
+                    IPropertySet roamingProperties = ApplicationData.Current.RoamingSettings.Values;
+                    if (!roamingProperties.ContainsKey("hasLaunchedBefore"))
+                    {
+                        ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
+                        roamingProperties["hasLaunchedBefore"] = bool.TrueString;
+                    }
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    // rootFrame.Navigate(typeof(Pages.MainMenuPage), e.Arguments);
+                    rootFrame.Navigate(typeof(Pages.GamePage), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();

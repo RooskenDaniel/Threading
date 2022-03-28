@@ -3,5 +3,29 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Tetris">
-
+    <Application.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="MainColor" Color="#FF3EA2EF"/>
+            <SolidColorBrush x:Key="TextColor" Color="White"/>
+            <SolidColorBrush x:Key="AltColor" Color="#FF92C6FF"/>
+            <x:Double x:Key="MaxHeaderHeight">200</x:Double>
+            <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#FF92C6FF"/>
+            <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="#FF3EA2EF"/>
+            <x:String x:Key="GameTItle">Tetris!</x:String>
+            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="White"/>
+            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FF3EA2EF"/>
+            <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="#FF3EA2EF"/>
+            <x:String x:Key="GameSubtitle">With multithreading!</x:String>
+            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="White"/>
+            <x:String x:Key="NewGameOption">New Game</x:String>
+            <x:String x:Key="ViewReplaysOption">Replays</x:String>
+            <x:String x:Key="ToggleFullscreenOption">Fullscreen / Windowed</x:String>
+            <x:String x:Key="QuitGameOption">Quit Game</x:String>
+            <x:String x:Key="Credits" xml:space="preserve">Created by Bram Buist, Daniël Roosken &amp; Dennis Rozema
+for the course "Threading in c#" at NHLStenden </x:String>
+            <FontFamily x:Key="DefaultFont">Segoe UI Variable</FontFamily>
+            <x:Double x:Key="MaxFooterHeight">75</x:Double>
+            <x:String x:Key="FullscreenToggleOption">Fullscreen / Windowed</x:String>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

@@ -1,0 +1,54 @@
+﻿<Page
+    SizeChanged="Page_SizeChanged"
+    x:Class="Tetris.Pages.GamePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Tetris.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{StaticResource AltColor}">
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100*" x:Name="midColumn"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100*" x:Name="midRow"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column ="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition x:Name="sideBarColumn"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column ="0" Background="Black" x:Name="PlayAreaGrid" Width="{Binding Height, RelativeSource={RelativeSource Self}}" />
+            <Border Grid.Column ="1" Background="{StaticResource MainColor}" Padding="5,5,5,5">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                    <Viewbox MaxHeight="60">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="ScoreLabel" TextWrapping="Wrap" Text="Score:" Foreground="White" FontSize="32"/>
+                            <TextBlock x:Name="ScoreValue" TextWrapping="Wrap" Text="00000" Foreground="White" FontSize="32" Margin="10,0,0,0" />
+                        </StackPanel>
+                    </Viewbox>
+                    <Viewbox MaxHeight="60">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock x:Name="LinesLabel" TextWrapping="Wrap" Text="Lines:" Foreground="White" FontSize="32" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="LinesValue" TextWrapping="Wrap" Text="00000" Foreground="White" FontSize="32" Margin="10,0,0,0" />
+                        </StackPanel>
+                    </Viewbox>
+                    <Viewbox MaxHeight="60">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="PiecesLabel" TextWrapping="Wrap" Text="Pieces:" Foreground="White" FontSize="32" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="PiecesValue" TextWrapping="Wrap" Text="00000" Foreground="White" FontSize="32" Margin="10,0,0,0" HorizontalAlignment="Left" />
+                        </StackPanel>
+                    </Viewbox>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>
