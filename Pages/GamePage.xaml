@@ -81,6 +81,11 @@
                         <TextBlock x:Name="PiecesValue" TextWrapping="Wrap" Text="00000" Foreground="White" FontSize="32" Margin="10,0,0,0" HorizontalAlignment="Left" />
                     </StackPanel>
                 </Viewbox>
+                <Viewbox VerticalAlignment="Stretch" Margin="0,10,0,0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+                        <TextBlock x:Name="instructionsTextBlock" TextWrapping="Wrap" Text="{StaticResource InstructionsText}" Foreground="White" FontSize="32" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Viewbox>
             </StackPanel>
         </Grid>
     </Grid>

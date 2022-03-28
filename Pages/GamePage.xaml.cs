@@ -18,7 +18,11 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+//todo:
+//Clean code + convert strings to resources
+//Move gameloop / threads
+//fix glitchy main menu transition
+//Game over state
 
 namespace Tetris.Pages
 {

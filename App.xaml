@@ -26,6 +26,15 @@ for the course "Threading in c#" at NHLStenden </x:String>
             <FontFamily x:Key="DefaultFont">Segoe UI Variable</FontFamily>
             <x:Double x:Key="MaxFooterHeight">75</x:Double>
             <x:String x:Key="FullscreenToggleOption">Fullscreen / Windowed</x:String>
+            <x:String x:Key="InstructionsText" xml:space="preserve">Controls:
+A / Left arrow : 🡐
+D / Right arrow : 🡒
+Q : ⟲
+E : ⟳
+S / Down arrow : Soft Drop
+W / Up Arrow : Hard Drop
+Space : Hold
+Escape : Main Menu</x:String>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
