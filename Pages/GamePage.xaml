@@ -52,12 +52,14 @@
                     <Viewbox>
                         <TextBlock Text="Upcoming" HorizontalAlignment="Center" Foreground="{StaticResource TextColor}"/>
                     </Viewbox>
-                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview1"/>
-                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview2"/>
-                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview3"/>
-                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview4"/>
-                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview5"/>
-                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview6"/>
+                    <StackPanel x:Name="upcomingPreviewsPanel" Spacing="10">
+                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview1"/>
+                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview2"/>
+                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview3"/>
+                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview4"/>
+                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview5"/>
+                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview6"/>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
             <StackPanel Grid.Column ="3"  Padding="5,5,5,5" Orientation="Vertical" VerticalAlignment="Stretch">

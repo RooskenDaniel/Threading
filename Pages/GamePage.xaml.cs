@@ -1,6 +1,7 @@
 ﻿using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -32,7 +33,9 @@ namespace Tetris.Pages
         private const double PREVIEW_BARS_RATIO = 0.25;
         private const double STAT_BAR_RATIO = 0.5;
         bool gameLoopActive = true;
-        private readonly Border[,] borders;
+        private readonly Border[,] playFieldBorders;
+        private readonly PiecePreviewUserControl heldPiecePreview;
+        private readonly List<PiecePreviewUserControl> upcomingPiecesPreviews;
 
         private readonly PlayField playField;
         private double gameTime = 0;
@@ -43,10 +46,21 @@ namespace Tetris.Pages
             setMidCellSize();
 
             //create the playfield borders and model
-            borders = new Border[PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT];
+            playFieldBorders = new Border[PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT];
             AddPlayFieldBorders(PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT);
             playField = new PlayField(PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT);
 
+            //get references to the previews
+            heldPiecePreview = this.FindName("previewHeld") as PiecePreviewUserControl;
+            StackPanel panel = this.FindName("upcomingPreviewsPanel") as StackPanel;
+            upcomingPiecesPreviews = new List<PiecePreviewUserControl>();
+            foreach (Object child in panel.Children)
+            {
+                if(child is PiecePreviewUserControl)
+                {
+                    upcomingPiecesPreviews.Add(child as PiecePreviewUserControl);
+                }
+            }
             //register for inputs
             Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
 
@@ -63,6 +77,10 @@ namespace Tetris.Pages
                 playArea.ColumnDefinitions.Add(new ColumnDefinition());
                 for (int j = 0; j < height; j++)
                 {
+                    if(i == 0)
+                    {
+                        playArea.RowDefinitions.Add(new RowDefinition());
+                    }
                     Border border = new Border();
                     border.BorderThickness = new Thickness(1, 1, 1, 1);
                     border.BorderBrush = new SolidColorBrush(Windows.UI.Colors.DimGray);
@@ -70,43 +88,39 @@ namespace Tetris.Pages
                     Grid.SetColumn(border, i);
                     Grid.SetRow(border, j);
                     //WPF grids are top to bottom, but we want to store coodinates bottom to top
-                    borders[i, height - j - 1] = border;
+                    playFieldBorders[i, height - j - 1] = border;
                 }
-            }
-            for (int i = 0; i < height; i++)
-            {
-                playArea.RowDefinitions.Add(new RowDefinition());
             }
         }
 
-        private void SetBorderColor(int x, int y, CellState cellState)
+
+        private void SetBorderColor(Border border, CellState cellState)
         {
-            Border b = borders[x, y];
             switch (cellState)
             {
                 case CellState.LIGHT_BLUE:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.Aqua);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.Aqua);
                     break;
                 case CellState.DARK_BLUE:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.Blue);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.Blue);
                     break;
                 case CellState.ORANGE:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.Orange);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.Orange);
                     break;
                 case CellState.YELLOW:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.Yellow);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.Yellow);
                     break;
                 case CellState.GREEN:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.Lime);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.Lime);
                     break;
                 case CellState.RED:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.Red);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.Red);
                     break;
                 case CellState.MAGENTA:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.DarkViolet);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.DarkViolet);
                     break;
                 default:
-                    b.Background = null;
+                    border.Background = null;
                     break;
             }
         }
@@ -138,13 +152,33 @@ namespace Tetris.Pages
         //runs on UI (main) thread
         private void UpdatePage()
         {
+            //update playing field
             for (int x = 0; x < PLAYFIELD_WIDTH; x++)
             {
                 for (int y = 0; y < PLAYFIELD_HEIGHT; y++)
                 {
-                    SetBorderColor(x, y, playField.getCellAppearance(x, y));
+                    SetBorderColor(playFieldBorders[x, y], playField.getCellAppearance(x, y));
                 }
             }
+            //update previews
+            ImmutableQueue<Piece> queue = playField.IncomingPieces;
+            foreach(PiecePreviewUserControl preview in upcomingPiecesPreviews)
+            {
+                if(queue.Count() > 0)
+                {
+                    Piece piece = queue.Peek();
+                    for (int x = 0; x < preview.PREVIEW_GRID_SIZE; x++)
+                    {
+                        for (int y = 0; y < preview.PREVIEW_GRID_SIZE; y++)
+                        {
+                            SetBorderColor(preview.getBorder(x,y), piece.getCellAppearance(x,y));
+                        }
+                    }
+                    queue = queue.Dequeue();
+                }
+            }
+            //todo update held preview
+
         }
         #endregion
 

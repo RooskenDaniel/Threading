@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tetris
 {
-    internal class CoordinatesPair
+    public class CoordinatesPair
     {
         public int x;
         public int y;

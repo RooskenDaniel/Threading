@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,12 @@ namespace Tetris
         private CellState[,] grid;
         private Piece currentPiece;
         //keeps track of next couple of pieces to show in gui
-        private readonly Queue<Piece> incomingPieces = new Queue<Piece>();
+        public ImmutableQueue<Piece> IncomingPieces
+        { get
+            {
+                return ImmutableQueue.CreateRange(_incomingPieces);
+            } }
+        private readonly Queue<Piece> _incomingPieces = new Queue<Piece>();
 
         private int ticksSinceAutoMove = 0;
         public PlayField(int width, int height)
@@ -94,11 +100,11 @@ namespace Tetris
         private void spawnNextPiece()
         {
             //handle queue
-            while(incomingPieces.Count < PIECES_IN_QUEUE)
+            while(_incomingPieces.Count < PIECES_IN_QUEUE)
             {
-                incomingPieces.Enqueue(PieceGenerator.GetNext());
+                _incomingPieces.Enqueue(PieceGenerator.GetNext());
             }
-            currentPiece = incomingPieces.Dequeue();
+            currentPiece = _incomingPieces.Dequeue();
 
             //set spawn position
             currentPiece.SetPosition(4, grid.GetLength(1));

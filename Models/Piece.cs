@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tetris
 {
-    internal class Piece
+    public class Piece
     {
         public readonly CellState cellColor;
         //contains x,y coordinates relative to rotation point of the shape
@@ -90,6 +90,40 @@ namespace Tetris
             {
                 return;
             }
+        }
+
+        /// <summary>
+        /// Gets the cellState of the given coordinates appearence 
+        /// as if the piece was layed out on a grid 
+        /// where 0,0 is the bottom left
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public CellState getCellAppearance(int x, int y)
+        {
+            //get left most and bottom most positions
+            int? minX = null;
+            int? minY = null;
+            foreach (CoordinatesPair coordinates in RelativecellPostions)
+            {
+                if (minX == null || coordinates.x < minX)
+                {
+                    minX = coordinates.x;
+                }
+
+                if (minY == null || coordinates.y < minY)
+                {
+                    minY = coordinates.y;
+                }
+            }
+            foreach (CoordinatesPair coordinates in RelativecellPostions)
+            { 
+                if(x == coordinates.x - minX.Value && y == coordinates.y - minY.Value)
+                {
+                    return cellColor;
+                }
+            }
+            return CellState.EMPTY;
         }
     }
 }
