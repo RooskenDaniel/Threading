@@ -12,13 +12,12 @@ namespace Tetris
         //contains x,y coordinates relative to rotation point of the shape
         private readonly IReadOnlyCollection<CoordinatesPair> RelativecellPostions;
         //tracks the location of the cells on the board
-        private readonly CoordinatesPair[] _Postions;
-        public CoordinatesPair[] Postions { get { return _Postions; } }
+        public CoordinatesPair[] Postions { get; private set; }
 
         public Piece(List<CoordinatesPair> RelativecellPostions, CellState Color)
         {
             this.RelativecellPostions = RelativecellPostions.AsReadOnly();
-            _Postions = new CoordinatesPair[RelativecellPostions.Count];
+            Postions = new CoordinatesPair[RelativecellPostions.Count];
             this.cellColor = Color;
         }
 
@@ -28,15 +27,15 @@ namespace Tetris
             {
                 int cellX = x + RelativecellPostions.ElementAt(i).x;
                 int cellY = y + RelativecellPostions.ElementAt(i).y;
-                _Postions[i] = new CoordinatesPair(cellX, cellY);
+                Postions[i] = new CoordinatesPair(cellX, cellY);
             }
          }
 
         public bool HasPostion()
         {
-            for (int i = 0; i < _Postions.Length; i++)
+            for (int i = 0; i < Postions.Length; i++)
             {
-                if (_Postions[i] == null)
+                if (Postions[i] == null)
                 {
                     return false;
                 }
@@ -46,9 +45,9 @@ namespace Tetris
 
         public void ClearPosition()
         {
-            for(int i = 0; i < _Postions.Length; i++)
+            for(int i = 0; i < Postions.Length; i++)
             {
-                _Postions[i] = null;
+                Postions[i] = null;
             }
         }
 
@@ -58,7 +57,7 @@ namespace Tetris
             {
                 return;
             }
-            foreach(CoordinatesPair coordinates in _Postions)
+            foreach(CoordinatesPair coordinates in Postions)
             {
                 coordinates.x += distance;
             }
@@ -70,7 +69,7 @@ namespace Tetris
             {
                 return;
             }
-            foreach (CoordinatesPair coordinates in _Postions)
+            foreach (CoordinatesPair coordinates in Postions)
             {
                 coordinates.y += distance;
             }

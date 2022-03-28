@@ -15,6 +15,7 @@ namespace Tetris
         //grid coodinates go up to down, left to right
         private CellState[,] grid;
         private Piece currentPiece;
+        public Piece HeldPiece { get; private set; }
         //keeps track of next couple of pieces to show in gui
         public ImmutableQueue<Piece> IncomingPieces
         { get
@@ -24,6 +25,7 @@ namespace Tetris
         private readonly Queue<Piece> _incomingPieces = new Queue<Piece>();
 
         private int ticksSinceAutoMove = 0;
+
         public PlayField(int width, int height)
         {
             grid = new CellState[width, height];

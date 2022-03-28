@@ -125,6 +125,8 @@ namespace Tetris.Pages
             }
         }
         #endregion
+
+        //todo thread managment / gameloop should probably not be a pages responsibility
         #region Game loop
         private void GameLoop()
         {
@@ -167,18 +169,28 @@ namespace Tetris.Pages
                 if(queue.Count() > 0)
                 {
                     Piece piece = queue.Peek();
-                    for (int x = 0; x < preview.PREVIEW_GRID_SIZE; x++)
-                    {
-                        for (int y = 0; y < preview.PREVIEW_GRID_SIZE; y++)
-                        {
-                            SetBorderColor(preview.getBorder(x,y), piece.getCellAppearance(x,y));
-                        }
-                    }
+                    drawPreviewPiece(preview, piece);
                     queue = queue.Dequeue();
                 }
             }
-            //todo update held preview
+            //update held preview
+            if(playField.HeldPiece != null)
+            {
+                PiecePreviewUserControl preview = this.FindName("previewHeld") as PiecePreviewUserControl;
+                drawPreviewPiece(preview, playField.HeldPiece);
+            }
 
+        }
+
+        private void drawPreviewPiece(PiecePreviewUserControl preview, Piece piece)
+        {
+            for (int x = 0; x < preview.PREVIEW_GRID_SIZE; x++)
+            {
+                for (int y = 0; y < preview.PREVIEW_GRID_SIZE; y++)
+                {
+                    SetBorderColor(preview.getBorder(x, y), piece.getCellAppearance(x, y));
+                }
+            }
         }
         #endregion
 
