@@ -11,7 +11,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 //todo:
-//Clean code + convert strings to resources
+//convert strings to resources
 //Move gameloop / threads
 
 namespace Tetris.Pages

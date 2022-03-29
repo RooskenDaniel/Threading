@@ -36,12 +36,12 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="1"  Spacing="10" Padding="0,0,0,0">
                     <Viewbox>
-                        <TextBlock Text="Held" HorizontalAlignment="Center" Foreground="{StaticResource TextColor}"/>
+                        <TextBlock Text="{StaticResource HeldPieceLabel}" HorizontalAlignment="Center" Foreground="{StaticResource TextColor}"/>
                     </Viewbox>
                     <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="Preview_SizeChanged" Name="previewHeld"/>
                 </StackPanel>
             </Grid>
-            <Grid Grid.Column ="1" Background="Black" x:Name="PlayAreaGrid"/>
+            <Grid Grid.Column ="1" Background="{StaticResource PlayAreaBackgroundColor}" x:Name="PlayAreaGrid"/>
             <Grid Grid.Column="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.1*"/>
@@ -50,7 +50,7 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="1" Spacing="10" Padding="0,0,0,0">
                     <Viewbox>
-                        <TextBlock Text="Upcoming" HorizontalAlignment="Center" Foreground="{StaticResource TextColor}"/>
+                        <TextBlock Text="{StaticResource UpcomingPiecesLabel}" HorizontalAlignment="Center" Foreground="{StaticResource TextColor}"/>
                     </Viewbox>
                     <StackPanel x:Name="upcomingPreviewsPanel" Spacing="10">
                         <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="Preview_SizeChanged" Name="preview1"/>
@@ -65,25 +65,14 @@
             <StackPanel Grid.Column ="3"  Padding="5,5,5,5" Orientation="Vertical" VerticalAlignment="Stretch">
                 <Viewbox MaxHeight="60">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock x:Name="ScoreLabel" TextWrapping="Wrap" Text="Score:" Foreground="White" FontSize="32"/>
-                        <TextBlock x:Name="ScoreValue" TextWrapping="Wrap" Text="00000" Foreground="White" FontSize="32" Margin="10,0,0,0" />
+                        <TextBlock x:Name="ScoreLabel" TextWrapping="Wrap" Text="{StaticResource ScoreLabel}" Foreground="{StaticResource TextColor}" FontSize="32"/>
+                        <TextBlock x:Name="ScoreValue" TextWrapping="Wrap" Text="00000" Foreground="{StaticResource TextColor}" FontSize="32" Margin="10,0,0,0" />
                     </StackPanel>
                 </Viewbox>
-                <Viewbox MaxHeight="60">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <TextBlock x:Name="LinesLabel" TextWrapping="Wrap" Text="Lines:" Foreground="White" FontSize="32" HorizontalAlignment="Left"/>
-                        <TextBlock x:Name="LinesValue" TextWrapping="Wrap" Text="00000" Foreground="White" FontSize="32" Margin="10,0,0,0" />
-                    </StackPanel>
-                </Viewbox>
-                <Viewbox MaxHeight="60">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock x:Name="PiecesLabel" TextWrapping="Wrap" Text="Pieces:" Foreground="White" FontSize="32" HorizontalAlignment="Left"/>
-                        <TextBlock x:Name="PiecesValue" TextWrapping="Wrap" Text="00000" Foreground="White" FontSize="32" Margin="10,0,0,0" HorizontalAlignment="Left" />
-                    </StackPanel>
-                </Viewbox>
+
                 <Viewbox VerticalAlignment="Stretch" Margin="0,10,0,0">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
-                        <TextBlock x:Name="instructionsTextBlock" TextWrapping="Wrap" Text="{StaticResource InstructionsText}" Foreground="White" FontSize="32" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="instructionsTextBlock" TextWrapping="Wrap" Text="{StaticResource InstructionsText}" Foreground="{StaticResource TextColor}" FontSize="32" HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Viewbox>
             </StackPanel>
@@ -91,7 +80,7 @@
         <Canvas Visibility="Collapsed" x:Name="overlayCanvas" Background="#99000000">
             <StackPanel  x:Name="gameOverPanel" HorizontalAlignment="Center">
                 <Viewbox>
-                    <TextBlock x:Name="gameOverTextBlock" SizeChanged="Page_SizeChanged" TextAlignment="Center"  Text="GAME OVER!&#x0a;press escape for main menu" Foreground="{StaticResource TextColor}" FontWeight="Bold"/>
+                    <TextBlock x:Name="gameOverTextBlock" SizeChanged="Page_SizeChanged" TextAlignment="Center"  Text="{StaticResource GameOverText}" Foreground="{StaticResource TextColor}" FontWeight="Bold"/>
                 </Viewbox>
             </StackPanel>
         </Canvas>

@@ -24,8 +24,10 @@
             <x:String x:Key="Credits" xml:space="preserve">Created by Bram Buist, Daniël Roosken &amp; Dennis Rozema
 for the course "Threading in c#" at NHLStenden </x:String>
             <FontFamily x:Key="DefaultFont">Segoe UI Variable</FontFamily>
+            <x:String x:Key="HeldPieceLabel">Held</x:String>
             <x:Double x:Key="MaxFooterHeight">75</x:Double>
             <x:String x:Key="FullscreenToggleOption">Fullscreen / Windowed</x:String>
+            <SolidColorBrush x:Key="PlayAreaBackgroundColor" Color="Black"/>
             <x:String x:Key="InstructionsText" xml:space="preserve">Controls:
 A / Left arrow : 🡐
 D / Right arrow : 🡒
@@ -35,6 +37,11 @@ S / Down arrow : Soft Drop
 W / Up Arrow : Hard Drop
 Space : Hold
 Escape : Main Menu</x:String>
+            <x:String x:Key="GameOverText" xml:space="preserve">GAME OVER!
+press escape for main menu</x:String>
+            <x:String x:Key="ScoreLabel">Score:</x:String>
+            <x:String x:Key="LinesClearedLabel">Lines:</x:String>
+            <x:String x:Key="UpcomingPiecesLabel">Upcoming</x:String>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
