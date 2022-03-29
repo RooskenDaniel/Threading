@@ -64,7 +64,7 @@ namespace Tetris
                     // configuring the new page by passing required information as a navigation
                     // parameter
                     // rootFrame.Navigate(typeof(Pages.MainMenuPage), e.Arguments);
-                    rootFrame.Navigate(typeof(Pages.GamePage), e.Arguments);
+                    rootFrame.Navigate(typeof(Pages.MainMenuPage), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();

@@ -12,6 +12,7 @@
             <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#FF92C6FF"/>
             <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="#FF3EA2EF"/>
             <x:String x:Key="GameTItle">Tetris!</x:String>
+            <x:String x:Key="ReplayPageTitle">Replays</x:String>
             <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="White"/>
             <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FF3EA2EF"/>
             <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="#FF3EA2EF"/>
@@ -42,6 +43,7 @@ press escape for main menu</x:String>
             <x:String x:Key="ScoreLabel">Score:</x:String>
             <x:String x:Key="LinesClearedLabel">Lines:</x:String>
             <x:String x:Key="UpcomingPiecesLabel">Upcoming</x:String>
+            <x:String x:Key="ReplaySimPageTitle">Replay Simulation</x:String>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
