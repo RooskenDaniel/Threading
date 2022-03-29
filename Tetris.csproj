@@ -135,11 +135,11 @@
     <Compile Include="Pages\PiecePreviewUserControl.xaml.cs">
       <DependentUpon>PiecePreviewUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ReplayOverviewEntry.xaml.cs">
-      <DependentUpon>ReplayOverviewEntry.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\ReplayOverviewPage.xaml.cs">
       <DependentUpon>ReplayOverviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ReplaySimPage.xaml.cs">
+      <DependentUpon>ReplaySimPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -175,11 +175,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ReplayOverviewEntry.xaml">
+    <Page Include="Pages\ReplayOverviewPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ReplayOverviewPage.xaml">
+    <Page Include="Pages\ReplaySimPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

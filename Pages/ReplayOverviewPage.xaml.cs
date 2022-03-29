@@ -57,12 +57,12 @@ namespace Tetris.Pages
 
         private void startSimSingleThreadButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Frame.Navigate(typeof(ReplaySimPage));
         }
 
         private void startSimThreadPoolButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Frame.Navigate(typeof(ReplaySimPage));
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

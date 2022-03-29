@@ -43,6 +43,7 @@ press escape for main menu</x:String>
             <x:String x:Key="ScoreLabel">Score:</x:String>
             <x:String x:Key="LinesClearedLabel">Lines:</x:String>
             <x:String x:Key="UpcomingPiecesLabel">Upcoming</x:String>
+            <x:String x:Key="ReplaySimPageTitle">Replay Simulation</x:String>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
