@@ -1,22 +1,14 @@
-﻿using Microsoft.Toolkit.Uwp.UI.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 //todo:
 //Clean code + convert strings to resources
@@ -34,7 +26,7 @@ namespace Tetris.Pages
         private const int MIN_LOOP_TIME_MS = 7;
         private const double PREVIEW_BARS_RATIO = 0.25;
         private const double STAT_BAR_RATIO = 0.5;
-        private bool gameLoopActive = true;
+        private readonly bool gameLoopActive = true;
         private readonly Border[,] playFieldBorders;
         private readonly PiecePreviewUserControl heldPiecePreview;
         private readonly List<PiecePreviewUserControl> upcomingPiecesPreviews;
@@ -43,7 +35,7 @@ namespace Tetris.Pages
         private double gameTime = 0;
         public GamePage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             //set the inital playing field size
 
             //create the playfield borders and model
@@ -52,12 +44,12 @@ namespace Tetris.Pages
             playField = new PlayField(PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT);
 
             //get references to the previews
-            heldPiecePreview = this.FindName("previewHeld") as PiecePreviewUserControl;
-            StackPanel panel = this.FindName("upcomingPreviewsPanel") as StackPanel;
+            heldPiecePreview = FindName("previewHeld") as PiecePreviewUserControl;
+            StackPanel panel = FindName("upcomingPreviewsPanel") as StackPanel;
             upcomingPiecesPreviews = new List<PiecePreviewUserControl>();
-            foreach (Object child in panel.Children)
+            foreach (object child in panel.Children)
             {
-                if(child is PiecePreviewUserControl)
+                if (child is PiecePreviewUserControl)
                 {
                     upcomingPiecesPreviews.Add(child as PiecePreviewUserControl);
                 }
@@ -72,19 +64,21 @@ namespace Tetris.Pages
         #region Initialization helpers
         private void AddPlayFieldBorders(int width, int height)
         {
-            Grid playArea = this.FindName("PlayAreaGrid") as Grid;
+            Grid playArea = FindName("PlayAreaGrid") as Grid;
             for (int i = 0; i < width; i++)
             {
                 playArea.ColumnDefinitions.Add(new ColumnDefinition());
                 for (int j = 0; j < height; j++)
                 {
-                    if(i == 0)
+                    if (i == 0)
                     {
                         playArea.RowDefinitions.Add(new RowDefinition());
                     }
-                    Border border = new Border();
-                    border.BorderThickness = new Thickness(1, 1, 1, 1);
-                    border.BorderBrush = new SolidColorBrush(Windows.UI.Colors.DimGray);
+                    Border border = new Border
+                    {
+                        BorderThickness = new Thickness(1, 1, 1, 1),
+                        BorderBrush = new SolidColorBrush(Windows.UI.Colors.DimGray)
+                    };
                     playArea.Children.Add(border);
                     Grid.SetColumn(border, i);
                     Grid.SetRow(border, j);
@@ -160,53 +154,52 @@ namespace Tetris.Pages
             {
                 for (int y = 0; y < PLAYFIELD_HEIGHT; y++)
                 {
-                    SetBorderColor(playFieldBorders[x, y], playField.getCellAppearance(x, y));
+                    SetBorderColor(playFieldBorders[x, y], playField.GetCellAppearance(x, y));
                 }
             }
             //update previews
             ImmutableQueue<Piece> queue = playField.IncomingPieces;
-            foreach(PiecePreviewUserControl preview in upcomingPiecesPreviews)
+            foreach (PiecePreviewUserControl preview in upcomingPiecesPreviews)
             {
-                if(queue.Count() > 0)
+                if (queue.Count() > 0)
                 {
                     Piece piece = queue.Peek();
-                    drawPreviewPiece(preview, piece);
+                    DrawPreviewPiece(preview, piece);
                     queue = queue.Dequeue();
                 }
             }
             //update held preview
-            if(playField.HeldPiece != null)
+            if (playField.HeldPiece != null)
             {
-                PiecePreviewUserControl preview = this.FindName("previewHeld") as PiecePreviewUserControl;
-                drawPreviewPiece(preview, playField.HeldPiece);
+                DrawPreviewPiece(heldPiecePreview, playField.HeldPiece);
             }
             //draw gameover text
             if (playField.gameIsOver)
             {
                 //make text visible
-              Canvas canvas = this.FindName("overlayCanvas") as Canvas;
-                if(canvas.Visibility == Visibility.Collapsed)
+                Canvas canvas = FindName("overlayCanvas") as Canvas;
+                if (canvas.Visibility == Visibility.Collapsed)
                 {
                     canvas.Visibility = Visibility.Visible;
-                    resizeGameOverText();
+                    ResizeGameOverText();
                 }
             }
         }
 
-        private void drawPreviewPiece(PiecePreviewUserControl preview, Piece piece)
+        private void DrawPreviewPiece(PiecePreviewUserControl preview, Piece piece)
         {
             for (int x = 0; x < preview.PREVIEW_GRID_SIZE; x++)
             {
                 for (int y = 0; y < preview.PREVIEW_GRID_SIZE; y++)
                 {
-                    SetBorderColor(preview.getBorder(x, y), piece.getCellAppearance(x, y));
+                    SetBorderColor(preview.GetBorder(x, y), piece.GetCellAppearance(x, y));
                 }
             }
         }
         #endregion
 
 
-        void CoreWindow_KeyDown(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs e)
+        private void CoreWindow_KeyDown(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs e)
         {
             {
                 switch (e.VirtualKey)
@@ -257,24 +250,24 @@ namespace Tetris.Pages
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
 
-            setMidCellSize();
+            SetMidCellSize();
             if (playField.gameIsOver)
             {
-                resizeGameOverText();
+                ResizeGameOverText();
             }
         }
 
         /// <summary>
         /// Makes the playing field responsive by reszing it while mantaining it's aspect ratio
         /// </summary>
-        private void setMidCellSize()
+        private void SetMidCellSize()
         {
             double windowHeight = ((Frame)Window.Current.Content).ActualHeight;
             double windowWidth = ((Frame)Window.Current.Content).ActualWidth;
-            RowDefinition midRow = this.FindName("midRow") as RowDefinition;
-            ColumnDefinition midCol = this.FindName("midColumn") as ColumnDefinition;
+            RowDefinition midRow = FindName("midRow") as RowDefinition;
+            ColumnDefinition midCol = FindName("midColumn") as ColumnDefinition;
 
-            double ratio = (double)PLAYFIELD_HEIGHT / ((double)PLAYFIELD_WIDTH * ((PREVIEW_BARS_RATIO * 2) + STAT_BAR_RATIO + 1));
+            double ratio = PLAYFIELD_HEIGHT / (PLAYFIELD_WIDTH * ((PREVIEW_BARS_RATIO * 2) + STAT_BAR_RATIO + 1));
             if (windowHeight / ratio > windowWidth)
             {
                 //use width
@@ -290,13 +283,13 @@ namespace Tetris.Pages
             }
         }
 
-        private void resizeGameOverText()
+        private void ResizeGameOverText()
         {
             double windowHeight = ((Frame)Window.Current.Content).ActualHeight;
             double windowWidth = ((Frame)Window.Current.Content).ActualWidth;
-            ColumnDefinition midCol = this.FindName("midColumn") as ColumnDefinition;
-            Canvas canvas = this.FindName("overlayCanvas") as Canvas;
-            StackPanel panel = this.FindName("gameOverPanel") as StackPanel;
+            ColumnDefinition midCol = FindName("midColumn") as ColumnDefinition;
+            Canvas canvas = FindName("overlayCanvas") as Canvas;
+            StackPanel panel = FindName("gameOverPanel") as StackPanel;
             panel.Width = midCol.ActualWidth * 0.5;
             panel.MaxHeight = windowHeight;
             canvas.Width = windowWidth;

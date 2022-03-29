@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tetris
 {
@@ -18,7 +15,7 @@ namespace Tetris
         {
             this.RelativecellPostions = RelativecellPostions.AsReadOnly();
             Postions = new CoordinatesPair[RelativecellPostions.Count];
-            this.cellColor = Color;
+            cellColor = Color;
         }
 
         public void SetPosition(int x, int y)
@@ -29,7 +26,7 @@ namespace Tetris
                 int cellY = y + RelativecellPostions.ElementAt(i).y;
                 Postions[i] = new CoordinatesPair(cellX, cellY);
             }
-         }
+        }
 
         public bool HasPostion()
         {
@@ -45,7 +42,7 @@ namespace Tetris
 
         public void ClearPosition()
         {
-            for(int i = 0; i < Postions.Length; i++)
+            for (int i = 0; i < Postions.Length; i++)
             {
                 Postions[i] = null;
             }
@@ -57,7 +54,7 @@ namespace Tetris
             {
                 return;
             }
-            foreach(CoordinatesPair coordinates in Postions)
+            foreach (CoordinatesPair coordinates in Postions)
             {
                 coordinates.x += distance;
             }
@@ -98,7 +95,7 @@ namespace Tetris
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public CellState getCellAppearance(int x, int y)
+        public CellState GetCellAppearance(int x, int y)
         {
             //get left most and bottom most positions
             int? minX = null;
@@ -116,8 +113,8 @@ namespace Tetris
                 }
             }
             foreach (CoordinatesPair coordinates in RelativecellPostions)
-            { 
-                if(x == coordinates.x - minX.Value && y == coordinates.y - minY.Value)
+            {
+                if (x == coordinates.x - minX.Value && y == coordinates.y - minY.Value)
                 {
                     return cellColor;
                 }

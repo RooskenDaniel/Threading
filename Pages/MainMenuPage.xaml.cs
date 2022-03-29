@@ -1,20 +1,9 @@
 ﻿using Microsoft.Toolkit.Uwp.UI.Controls;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -29,25 +18,25 @@ namespace Tetris.Pages
         private int? FocusedRow = 0;
         public MainMenuPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        void NewGameButton_Click(object sender, RoutedEventArgs e)
+        private void NewGameButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(GamePage));
+            Frame.Navigate(typeof(GamePage));
         }
 
-        void ReplayButton_Click(object sender, RoutedEventArgs e)
+        private void ReplayButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        void QuitButton_Click(object sender, RoutedEventArgs e)
+        private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Exit();
         }
 
-        void FullscreenButton_Click(object sender, RoutedEventArgs e)
+        private void FullscreenButton_Click(object sender, RoutedEventArgs e)
         {
             ApplicationView view = ApplicationView.GetForCurrentView();
             if (view.IsFullScreenMode)
@@ -71,7 +60,7 @@ namespace Tetris.Pages
                 case VirtualKey.Down:
                 case VirtualKey.GamepadDPadDown:
                 case VirtualKey.GamepadLeftThumbstickDown:
-                    UniformGrid grid = this.FindName("ButtonGrid") as UniformGrid;
+                    UniformGrid grid = FindName("ButtonGrid") as UniformGrid;
                     if (FocusedRow != null)
                     {
                         newValue = FocusedRow.Value + 1;
@@ -80,7 +69,7 @@ namespace Tetris.Pages
                             FocusedRow = newValue;
                         }
                     }
-                    setFocus();
+                    SetFocus();
                     break;
                 case VirtualKey.W:
                 case VirtualKey.Up:
@@ -94,7 +83,7 @@ namespace Tetris.Pages
                             FocusedRow = newValue;
                         }
                     }
-                    setFocus();
+                    SetFocus();
                     break;
                 case VirtualKey.Escape:
                     Application.Current.Exit();
@@ -103,9 +92,9 @@ namespace Tetris.Pages
             }
         }
 
-        private void setFocus()
+        private void SetFocus()
         {
-            UniformGrid grid = this.FindName("ButtonGrid") as UniformGrid;
+            UniformGrid grid = FindName("ButtonGrid") as UniformGrid;
             if (FocusedRow == null)
             {
                 FocusedRow = 0;
