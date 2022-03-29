@@ -1,23 +1,18 @@
-﻿using Microsoft.Toolkit.Uwp.UI.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Collections.Immutable;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+//todo:
+//convert strings to resources
+//Move gameloop / threads
 
 namespace Tetris.Pages
 {
@@ -29,27 +24,36 @@ namespace Tetris.Pages
         private const int PLAYFIELD_HEIGHT = 20;
         private const int PLAYFIELD_WIDTH = 10;
         private const int MIN_LOOP_TIME_MS = 7;
-        private const double SIDE_BAR_RATIO = 0.5;
-        bool gameLoopActive = true;
-        private readonly Border[,] borders;
+        private const double PREVIEW_BARS_RATIO = 0.25;
+        private const double STAT_BAR_RATIO = 0.5;
+        private readonly bool gameLoopActive = true;
+        private readonly Border[,] playFieldBorders;
+        private readonly PiecePreviewUserControl heldPiecePreview;
+        private readonly List<PiecePreviewUserControl> upcomingPiecesPreviews;
 
         private readonly PlayField playField;
         private double gameTime = 0;
         public GamePage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             //set the inital playing field size
-            setMidCellSize();
-
-            //set sidebar size relative to the playfield
-            ColumnDefinition sideBarCol = this.FindName("sideBarColumn") as ColumnDefinition;
-            sideBarCol.Width = new GridLength(SIDE_BAR_RATIO, GridUnitType.Star);
 
             //create the playfield borders and model
-            borders = new Border[PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT];
+            playFieldBorders = new Border[PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT];
             AddPlayFieldBorders(PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT);
             playField = new PlayField(PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT);
 
+            //get references to the previews
+            heldPiecePreview = FindName("previewHeld") as PiecePreviewUserControl;
+            StackPanel panel = FindName("upcomingPreviewsPanel") as StackPanel;
+            upcomingPiecesPreviews = new List<PiecePreviewUserControl>();
+            foreach (object child in panel.Children)
+            {
+                if (child is PiecePreviewUserControl)
+                {
+                    upcomingPiecesPreviews.Add(child as PiecePreviewUserControl);
+                }
+            }
             //register for inputs
             Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
 
@@ -60,60 +64,64 @@ namespace Tetris.Pages
         #region Initialization helpers
         private void AddPlayFieldBorders(int width, int height)
         {
-            Grid playArea = this.FindName("PlayAreaGrid") as Grid;
+            Grid playArea = FindName("PlayAreaGrid") as Grid;
             for (int i = 0; i < width; i++)
             {
                 playArea.ColumnDefinitions.Add(new ColumnDefinition());
                 for (int j = 0; j < height; j++)
                 {
-                    Border border = new Border();
-                    border.BorderThickness = new Thickness(1, 1, 1, 1);
-                    border.BorderBrush = new SolidColorBrush(Windows.UI.Colors.DimGray);
+                    if (i == 0)
+                    {
+                        playArea.RowDefinitions.Add(new RowDefinition());
+                    }
+                    Border border = new Border
+                    {
+                        BorderThickness = new Thickness(1, 1, 1, 1),
+                        BorderBrush = new SolidColorBrush(Windows.UI.Colors.DimGray)
+                    };
                     playArea.Children.Add(border);
                     Grid.SetColumn(border, i);
                     Grid.SetRow(border, j);
                     //WPF grids are top to bottom, but we want to store coodinates bottom to top
-                    borders[i, height - j - 1] = border;
+                    playFieldBorders[i, height - j - 1] = border;
                 }
-            }
-            for (int i = 0; i < height; i++)
-            {
-                playArea.RowDefinitions.Add(new RowDefinition());
             }
         }
 
-        private void SetBorderColor(int x, int y, CellState cellState)
+
+        private void SetBorderColor(Border border, CellState cellState)
         {
-            Border b = borders[x, y];
             switch (cellState)
             {
                 case CellState.LIGHT_BLUE:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.Aqua);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.Aqua);
                     break;
                 case CellState.DARK_BLUE:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.Blue);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.Blue);
                     break;
                 case CellState.ORANGE:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.Orange);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.Orange);
                     break;
                 case CellState.YELLOW:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.Yellow);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.Yellow);
                     break;
                 case CellState.GREEN:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.Lime);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.Lime);
                     break;
                 case CellState.RED:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.Red);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.Red);
                     break;
                 case CellState.MAGENTA:
-                    b.Background = new SolidColorBrush(Windows.UI.Colors.DarkViolet);
+                    border.Background = new SolidColorBrush(Windows.UI.Colors.DarkViolet);
                     break;
                 default:
-                    b.Background = null;
+                    border.Background = null;
                     break;
             }
         }
         #endregion
+
+        //todo thread managment / gameloop should probably not be a pages responsibility
         #region Game loop
         private void GameLoop()
         {
@@ -141,32 +149,63 @@ namespace Tetris.Pages
         //runs on UI (main) thread
         private void UpdatePage()
         {
+            //update playing field
             for (int x = 0; x < PLAYFIELD_WIDTH; x++)
             {
                 for (int y = 0; y < PLAYFIELD_HEIGHT; y++)
                 {
-                    SetBorderColor(x, y, playField.getCellAppearance(x, y));
+                    SetBorderColor(playFieldBorders[x, y], playField.GetCellAppearance(x, y));
+                }
+            }
+            //update previews
+            ImmutableQueue<Piece> queue = playField.IncomingPieces;
+            foreach (PiecePreviewUserControl preview in upcomingPiecesPreviews)
+            {
+                if (queue.Count() > 0)
+                {
+                    Piece piece = queue.Peek();
+                    DrawPreviewPiece(preview, piece);
+                    queue = queue.Dequeue();
+                }
+            }
+            //update held preview
+            if (playField.HeldPiece != null)
+            {
+                DrawPreviewPiece(heldPiecePreview, playField.HeldPiece);
+            }
+            //draw gameover text
+            if (playField.gameIsOver)
+            {
+                //make text visible
+                Canvas canvas = FindName("overlayCanvas") as Canvas;
+                if (canvas.Visibility == Visibility.Collapsed)
+                {
+                    canvas.Visibility = Visibility.Visible;
+                    ResizeGameOverText();
+                }
+            }
+        }
+
+        private void DrawPreviewPiece(PiecePreviewUserControl preview, Piece piece)
+        {
+            for (int x = 0; x < preview.PREVIEW_GRID_SIZE; x++)
+            {
+                for (int y = 0; y < preview.PREVIEW_GRID_SIZE; y++)
+                {
+                    SetBorderColor(preview.GetBorder(x, y), piece.GetCellAppearance(x, y));
                 }
             }
         }
         #endregion
 
 
-        void CoreWindow_KeyDown(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs e)
+        private void CoreWindow_KeyDown(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs e)
         {
             {
                 switch (e.VirtualKey)
                 {
                     case VirtualKey.Escape:
-                        if (Frame.CanGoBack)
-                        {
-                            Frame.GoBack();
-                        }
-                        else
-                        {
-                            Frame.Navigate(typeof(MainMenuPage));
-                        }
-
+                        Frame.Navigate(typeof(MainMenuPage));
                         break;
                     case VirtualKey.Left:
                     case VirtualKey.A:
@@ -210,33 +249,62 @@ namespace Tetris.Pages
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            setMidCellSize();
+
+            SetMidCellSize();
+            if (playField.gameIsOver)
+            {
+                ResizeGameOverText();
+            }
         }
 
         /// <summary>
         /// Makes the playing field responsive by reszing it while mantaining it's aspect ratio
         /// </summary>
-        private void setMidCellSize()
+        private void SetMidCellSize()
         {
-            RowDefinition midRow = this.FindName("midRow") as RowDefinition;
-            ColumnDefinition midCol = this.FindName("midColumn") as ColumnDefinition;
-            double ratio = (double)PLAYFIELD_HEIGHT / ((double)PLAYFIELD_WIDTH * (1 + SIDE_BAR_RATIO));
             double windowHeight = ((Frame)Window.Current.Content).ActualHeight;
             double windowWidth = ((Frame)Window.Current.Content).ActualWidth;
+            RowDefinition midRow = FindName("midRow") as RowDefinition;
+            ColumnDefinition midCol = FindName("midColumn") as ColumnDefinition;
+
+            double ratio = PLAYFIELD_HEIGHT / (PLAYFIELD_WIDTH * ((PREVIEW_BARS_RATIO * 2) + STAT_BAR_RATIO + 1));
             if (windowHeight / ratio > windowWidth)
             {
                 //use width
-                midCol.Width = new GridLength(windowWidth, GridUnitType.Star);
+                midCol.Width = new GridLength(windowWidth, GridUnitType.Pixel);
                 midRow.Height = new GridLength(windowWidth * ratio, GridUnitType.Pixel);
 
             }
             else
             {
                 //use height
-                midRow.Height = new GridLength(windowHeight, GridUnitType.Star);
+                midRow.Height = new GridLength(windowHeight, GridUnitType.Pixel);
                 midCol.Width = new GridLength(windowHeight / ratio, GridUnitType.Pixel);
             }
+        }
 
+        private void ResizeGameOverText()
+        {
+            double windowHeight = ((Frame)Window.Current.Content).ActualHeight;
+            double windowWidth = ((Frame)Window.Current.Content).ActualWidth;
+            ColumnDefinition midCol = FindName("midColumn") as ColumnDefinition;
+            Canvas canvas = FindName("overlayCanvas") as Canvas;
+            StackPanel panel = FindName("gameOverPanel") as StackPanel;
+            panel.Width = midCol.ActualWidth * 0.5;
+            panel.MaxHeight = windowHeight;
+            canvas.Width = windowWidth;
+            canvas.Height = windowHeight;
+            double left = (windowWidth / 2) - (panel.ActualWidth / 2);
+            Canvas.SetLeft(panel, left);
+
+        }
+
+        //binding with ActualHeight or ActualWidth doesn't work in UWP
+        //So we need to use a sizeChanged handler to mantain it's aspect ratio
+        private void Preview_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            PiecePreviewUserControl preview = sender as PiecePreviewUserControl;
+            preview.Height = preview.ActualWidth;
         }
     }
 }

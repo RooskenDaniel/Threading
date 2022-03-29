@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tetris
 {
-    internal class Piece
+    public class Piece
     {
         public readonly CellState cellColor;
         //contains x,y coordinates relative to rotation point of the shape
         private readonly IReadOnlyCollection<CoordinatesPair> RelativecellPostions;
         //tracks the location of the cells on the board
-        private readonly CoordinatesPair[] _Postions;
-        public CoordinatesPair[] Postions { get { return _Postions; } }
+        public CoordinatesPair[] Postions { get; private set; }
 
         public Piece(List<CoordinatesPair> RelativecellPostions, CellState Color)
         {
             this.RelativecellPostions = RelativecellPostions.AsReadOnly();
-            _Postions = new CoordinatesPair[RelativecellPostions.Count];
-            this.cellColor = Color;
+            Postions = new CoordinatesPair[RelativecellPostions.Count];
+            cellColor = Color;
         }
 
         public void SetPosition(int x, int y)
@@ -28,15 +24,15 @@ namespace Tetris
             {
                 int cellX = x + RelativecellPostions.ElementAt(i).x;
                 int cellY = y + RelativecellPostions.ElementAt(i).y;
-                _Postions[i] = new CoordinatesPair(cellX, cellY);
+                Postions[i] = new CoordinatesPair(cellX, cellY);
             }
-         }
+        }
 
         public bool HasPostion()
         {
-            for (int i = 0; i < _Postions.Length; i++)
+            for (int i = 0; i < Postions.Length; i++)
             {
-                if (_Postions[i] == null)
+                if (Postions[i] == null)
                 {
                     return false;
                 }
@@ -46,9 +42,9 @@ namespace Tetris
 
         public void ClearPosition()
         {
-            for(int i = 0; i < _Postions.Length; i++)
+            for (int i = 0; i < Postions.Length; i++)
             {
-                _Postions[i] = null;
+                Postions[i] = null;
             }
         }
 
@@ -58,7 +54,7 @@ namespace Tetris
             {
                 return;
             }
-            foreach(CoordinatesPair coordinates in _Postions)
+            foreach (CoordinatesPair coordinates in Postions)
             {
                 coordinates.x += distance;
             }
@@ -70,7 +66,7 @@ namespace Tetris
             {
                 return;
             }
-            foreach (CoordinatesPair coordinates in _Postions)
+            foreach (CoordinatesPair coordinates in Postions)
             {
                 coordinates.y += distance;
             }
@@ -90,6 +86,40 @@ namespace Tetris
             {
                 return;
             }
+        }
+
+        /// <summary>
+        /// Gets the cellState of the given coordinates appearence 
+        /// as if the piece was layed out on a grid 
+        /// where 0,0 is the bottom left
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public CellState GetCellAppearance(int x, int y)
+        {
+            //get left most and bottom most positions
+            int? minX = null;
+            int? minY = null;
+            foreach (CoordinatesPair coordinates in RelativecellPostions)
+            {
+                if (minX == null || coordinates.x < minX)
+                {
+                    minX = coordinates.x;
+                }
+
+                if (minY == null || coordinates.y < minY)
+                {
+                    minY = coordinates.y;
+                }
+            }
+            foreach (CoordinatesPair coordinates in RelativecellPostions)
+            {
+                if (x == coordinates.x - minX.Value && y == coordinates.y - minY.Value)
+                {
+                    return cellColor;
+                }
+            }
+            return CellState.EMPTY;
         }
     }
 }
