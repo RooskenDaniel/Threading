@@ -38,7 +38,7 @@
                     <Viewbox>
                         <TextBlock Text="Held" HorizontalAlignment="Center" Foreground="{StaticResource TextColor}"/>
                     </Viewbox>
-                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="previewHeld"/>
+                    <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="Preview_SizeChanged" Name="previewHeld"/>
                 </StackPanel>
             </Grid>
             <Grid Grid.Column ="1" Background="Black" x:Name="PlayAreaGrid"/>
@@ -53,12 +53,12 @@
                         <TextBlock Text="Upcoming" HorizontalAlignment="Center" Foreground="{StaticResource TextColor}"/>
                     </Viewbox>
                     <StackPanel x:Name="upcomingPreviewsPanel" Spacing="10">
-                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview1"/>
-                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview2"/>
-                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview3"/>
-                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview4"/>
-                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview5"/>
-                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="preview_SizeChanged" Name="preview6"/>
+                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="Preview_SizeChanged" Name="preview1"/>
+                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="Preview_SizeChanged" Name="preview2"/>
+                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="Preview_SizeChanged" Name="preview3"/>
+                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="Preview_SizeChanged" Name="preview4"/>
+                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="Preview_SizeChanged" Name="preview5"/>
+                        <local:PiecePreviewUserControl Width="auto" Height="100" SizeChanged="Preview_SizeChanged" Name="preview6"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>
@@ -88,5 +88,12 @@
                 </Viewbox>
             </StackPanel>
         </Grid>
+        <Canvas Visibility="Collapsed" x:Name="overlayCanvas" Background="#99000000">
+            <StackPanel  x:Name="gameOverPanel" HorizontalAlignment="Center">
+                <Viewbox>
+                    <TextBlock x:Name="gameOverTextBlock" SizeChanged="Page_SizeChanged" TextAlignment="Center"  Text="GAME OVER!&#x0a;press escape for main menu" Foreground="{StaticResource TextColor}" FontWeight="Bold"/>
+                </Viewbox>
+            </StackPanel>
+        </Canvas>
     </Grid>
 </Page>

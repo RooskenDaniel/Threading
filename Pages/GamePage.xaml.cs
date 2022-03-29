@@ -21,7 +21,6 @@ using Windows.UI.Xaml.Navigation;
 //todo:
 //Clean code + convert strings to resources
 //Move gameloop / threads
-//Game over state
 
 namespace Tetris.Pages
 {
@@ -35,7 +34,7 @@ namespace Tetris.Pages
         private const int MIN_LOOP_TIME_MS = 7;
         private const double PREVIEW_BARS_RATIO = 0.25;
         private const double STAT_BAR_RATIO = 0.5;
-        bool gameLoopActive = true;
+        private bool gameLoopActive = true;
         private readonly Border[,] playFieldBorders;
         private readonly PiecePreviewUserControl heldPiecePreview;
         private readonly List<PiecePreviewUserControl> upcomingPiecesPreviews;
@@ -46,7 +45,6 @@ namespace Tetris.Pages
         {
             this.InitializeComponent();
             //set the inital playing field size
-            setMidCellSize();
 
             //create the playfield borders and model
             playFieldBorders = new Border[PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT];
@@ -182,7 +180,17 @@ namespace Tetris.Pages
                 PiecePreviewUserControl preview = this.FindName("previewHeld") as PiecePreviewUserControl;
                 drawPreviewPiece(preview, playField.HeldPiece);
             }
-
+            //draw gameover text
+            if (playField.gameIsOver)
+            {
+                //make text visible
+              Canvas canvas = this.FindName("overlayCanvas") as Canvas;
+                if(canvas.Visibility == Visibility.Collapsed)
+                {
+                    canvas.Visibility = Visibility.Visible;
+                    resizeGameOverText();
+                }
+            }
         }
 
         private void drawPreviewPiece(PiecePreviewUserControl preview, Piece piece)
@@ -248,7 +256,12 @@ namespace Tetris.Pages
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+
             setMidCellSize();
+            if (playField.gameIsOver)
+            {
+                resizeGameOverText();
+            }
         }
 
         /// <summary>
@@ -256,12 +269,12 @@ namespace Tetris.Pages
         /// </summary>
         private void setMidCellSize()
         {
+            double windowHeight = ((Frame)Window.Current.Content).ActualHeight;
+            double windowWidth = ((Frame)Window.Current.Content).ActualWidth;
             RowDefinition midRow = this.FindName("midRow") as RowDefinition;
             ColumnDefinition midCol = this.FindName("midColumn") as ColumnDefinition;
 
             double ratio = (double)PLAYFIELD_HEIGHT / ((double)PLAYFIELD_WIDTH * ((PREVIEW_BARS_RATIO * 2) + STAT_BAR_RATIO + 1));
-            double windowHeight = ((Frame)Window.Current.Content).ActualHeight;
-            double windowWidth = ((Frame)Window.Current.Content).ActualWidth;
             if (windowHeight / ratio > windowWidth)
             {
                 //use width
@@ -277,9 +290,25 @@ namespace Tetris.Pages
             }
         }
 
+        private void resizeGameOverText()
+        {
+            double windowHeight = ((Frame)Window.Current.Content).ActualHeight;
+            double windowWidth = ((Frame)Window.Current.Content).ActualWidth;
+            ColumnDefinition midCol = this.FindName("midColumn") as ColumnDefinition;
+            Canvas canvas = this.FindName("overlayCanvas") as Canvas;
+            StackPanel panel = this.FindName("gameOverPanel") as StackPanel;
+            panel.Width = midCol.ActualWidth * 0.5;
+            panel.MaxHeight = windowHeight;
+            canvas.Width = windowWidth;
+            canvas.Height = windowHeight;
+            double left = (windowWidth / 2) - (panel.ActualWidth / 2);
+            Canvas.SetLeft(panel, left);
+
+        }
+
         //binding with ActualHeight or ActualWidth doesn't work in UWP
         //So we need to use a sizeChanged handler to mantain it's aspect ratio
-        private void preview_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void Preview_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             PiecePreviewUserControl preview = sender as PiecePreviewUserControl;
             preview.Height = preview.ActualWidth;

@@ -10,12 +10,13 @@ namespace Tetris
     internal class PlayField
     {
         private const int PIECES_IN_QUEUE = 7;
-        private const int TICKS_PER_AUTO_MOVE = 30;
+        private const int TICKS_PER_AUTO_MOVE = 1;
 
         //grid coodinates go up to down, left to right
         private CellState[,] grid;
         private Piece currentPiece;
         public Piece HeldPiece { get; private set; }
+        public bool gameIsOver = false;
         //keeps track of next couple of pieces to show in gui
         public ImmutableQueue<Piece> IncomingPieces
         { get
@@ -118,7 +119,7 @@ namespace Tetris
             {
                 if (location.y > grid.GetLength(1) - 1)
                 {
-                    EndGame();
+                    gameIsOver = true;
                     return;
                 }
                 else
@@ -149,10 +150,5 @@ namespace Tetris
                 LandPiece(piece);
             }
         }
-        private void EndGame()
-        {
-            //todo
-        }
-
     }
 }
