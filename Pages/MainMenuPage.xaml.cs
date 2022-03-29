@@ -28,7 +28,7 @@ namespace Tetris.Pages
 
         private void ReplayButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Frame.Navigate(typeof(ReplayOverviewPage));
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
