@@ -23,7 +23,7 @@ namespace Tetris.Pages
     {
         private const int PLAYFIELD_HEIGHT = 20;
         private const int PLAYFIELD_WIDTH = 10;
-        private const int MIN_LOOP_TIME_MS = 7;
+        private const int MIN_LOOP_TIME_MS = 70;//I changed this to 70 because it was way to fast
         private const double PREVIEW_BARS_RATIO = 0.25;
         private const double STAT_BAR_RATIO = 0.5;
         private readonly bool gameLoopActive = true;
