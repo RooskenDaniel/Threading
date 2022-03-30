@@ -59,22 +59,47 @@ namespace Tetris
 
         public void MovePieceRight()
         {
-            //todo
+            bool willBeInSideWall = false;//The program checks wheter the tetrominoes will be inside the wall, if thats the case the tetromino shall not be moved
+            for (int i = 0; i < currentPiece.Postions.Length; i++)
+            {
+                CoordinatesPair cellPos = currentPiece.Postions[i];
+                if (cellPos.x > 8)
+                {
+
+                    willBeInSideWall = true;
+                }
+            }
+            if (willBeInSideWall == false)
+            {
+                currentPiece.MoveX(1);
+            }
         }
 
         public void MovePieceLeft()
         {
-            //todo
+            bool willBeInSideWall = false;//The program checks wheter the tetrominoes will be inside the wall, if thats the case the tetromino shall not be moved
+            for (int i = 0; i < currentPiece.Postions.Length; i++)
+            {
+                CoordinatesPair cellPos = currentPiece.Postions[i];
+                if (cellPos.x < 1)
+                {
+                    willBeInSideWall = true;
+                }
+            }
+            if (willBeInSideWall == false)
+            { 
+                currentPiece.MoveX(-1);
+            }
         }
 
         public void RotatePieceLeft()
         {
-            //todo
+            currentPiece.RotateLeft();
         }
 
         public void RotatePieceRight()
         {
-            //todo
+            currentPiece.RotateRight();
         }
 
         public void SoftDrop()

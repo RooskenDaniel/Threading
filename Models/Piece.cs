@@ -78,6 +78,31 @@ namespace Tetris
             {
                 return;
             }
+            CoordinatesPair firstCoordinates = Postions[0];//In this the position[0] will be saved
+            var firstY = firstCoordinates.y;
+            var firstX = firstCoordinates.x;
+
+            //Here the tetromino will be placed around [0;0]
+            foreach (CoordinatesPair coordinates in Postions)
+            {
+                coordinates.y = coordinates.y - firstY;
+                coordinates.x = coordinates.x - firstX;
+            }
+
+            //Here the y and x will be turned
+            foreach (CoordinatesPair coordinates in Postions)
+            {
+                var temp = coordinates.y;//A temp is used because y immediatly overwritten
+                coordinates.y = -coordinates.x;
+                coordinates.x = temp;
+            }
+
+            //THe tetromino is placed back to its origanal position
+            foreach (CoordinatesPair coordinates in Postions)
+            {
+                coordinates.y = coordinates.y + firstY;
+                coordinates.x = coordinates.x + firstX;
+            }
         }
 
         public void RotateLeft()
@@ -85,6 +110,25 @@ namespace Tetris
             if (!HasPostion())
             {
                 return;
+            }
+            CoordinatesPair firstCoordinates = Postions[0];
+            var firstY = firstCoordinates.y;
+            var firstX = firstCoordinates.x;
+            foreach (CoordinatesPair coordinates in Postions)
+            {
+                coordinates.y = coordinates.y - firstY;
+                coordinates.x = coordinates.x - firstX;
+            }
+            foreach (CoordinatesPair coordinates in Postions)
+            {
+                var temp = coordinates.y;
+                coordinates.y = coordinates.x;
+                coordinates.x = -temp;
+            }
+            foreach (CoordinatesPair coordinates in Postions)
+            {
+                coordinates.y = coordinates.y + firstY;
+                coordinates.x = coordinates.x + firstX;
             }
         }
 
