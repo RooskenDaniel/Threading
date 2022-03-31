@@ -19,6 +19,8 @@ namespace Tetris
 
         private int ticksSinceAutoMove = 0;
 
+        public int score = 0;
+
         public PlayField(int width, int height)
         {
             grid = new CellState[width, height];
@@ -144,11 +146,11 @@ namespace Tetris
                     grid[location.x, location.y] = piece.cellColor;
                 }
             }
-            clearLines();
+            clearLines(0);
             SpawnNextPiece();
         }
 
-        private void clearLines()
+        private void clearLines(int linesCleared)
         {
             for (int x = 0; x < grid.GetLength(1); x++)
             {
@@ -165,9 +167,28 @@ namespace Tetris
                 {
                     for (int y = 0; y < grid.GetLength(0); y++)
                     {
-                        grid[y, x] = CellState.EMPTY;
+                        for (int xMover = x; xMover < grid.GetLength(1) - 1; xMover++)
+                        {
+                            grid[y, xMover] = grid[y, xMover + 1];
+                        }
                     }
+                    clearLines(linesCleared + 1);
                 }
+            }
+            switch (linesCleared)
+            {
+                case 1:
+                    score += 40;
+                    break;
+                case 2:
+                    score += 100;
+                    break;
+                case 3:
+                    score += 300;
+                    break;
+                case 4:
+                    score += 1200;
+                    break;
             }
         }
 
