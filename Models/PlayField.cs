@@ -144,7 +144,31 @@ namespace Tetris
                     grid[location.x, location.y] = piece.cellColor;
                 }
             }
+            clearLines();
             SpawnNextPiece();
+        }
+
+        private void clearLines()
+        {
+            for (int x = 0; x < grid.GetLength(1); x++)
+            {
+                bool rowISFilled = true;
+                for (int y = 0; y < grid.GetLength(0); y++)
+                {
+                    if (grid[y, x] == CellState.EMPTY)
+                    {
+                        rowISFilled = false;
+                        break;
+                    }
+                }
+                if (rowISFilled == true)
+                {
+                    for (int y = 0; y < grid.GetLength(0); y++)
+                    {
+                        grid[y, x] = CellState.EMPTY;
+                    }
+                }
+            }
         }
 
         private void MovePieceDown(Piece piece, int distance)
