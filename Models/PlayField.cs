@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using Tetris.Models;
 
 namespace Tetris
 {
@@ -21,7 +22,9 @@ namespace Tetris
 
         public int score = 0;
         private ReplayManager replayManager;
-        private string filenameTimestamp = System.DateTime.Now();
+        private string filenameTimestamp = System.DateTime.Now.ToString();
+
+        private bool holdLock = false;
 
         public PlayField(int width, int height)
         {
@@ -77,7 +80,7 @@ namespace Tetris
             {
                 currentPiece.MoveX(1);
             }
-            replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         public void MovePieceLeft()
@@ -95,40 +98,57 @@ namespace Tetris
             { 
                 currentPiece.MoveX(-1);
             }
-            replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         public void RotatePieceLeft()
         {
             currentPiece.RotateLeft();
-            replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         public void RotatePieceRight()
         {
             currentPiece.RotateRight();
-            replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         public void SoftDrop()
         {
             //todo
 
-            replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         public void HardDrop()
         {
             //todo
 
-            replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         public void HoldPiece()
         {
             //todo
-
-            replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            if(currentPiece != null && !holdLock)
+            {
+                if(HeldPiece != null)
+                {
+                    Piece p = HeldPiece;
+                    HeldPiece = currentPiece;
+                    HeldPiece.ClearPosition();
+                    currentPiece = p;
+                    currentPiece.SetPosition(4, grid.GetLength(1));
+                    holdLock = true;
+                }
+                else
+                {
+                    HeldPiece = currentPiece;
+                    HeldPiece.ClearPosition();
+                    SpawnNextPiece();
+                }
+            }
+            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         private void SpawnNextPiece()
@@ -142,6 +162,7 @@ namespace Tetris
 
             //set spawn position
             currentPiece.SetPosition(4, grid.GetLength(1));
+            holdLock = false;
         }
 
         private void LandPiece(Piece piece)
@@ -160,7 +181,7 @@ namespace Tetris
             }
             clearLines(0);
             SpawnNextPiece();
-            replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         private void clearLines(int linesCleared)

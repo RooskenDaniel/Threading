@@ -32,7 +32,7 @@ namespace Tetris.Models
 
         public async Task writeToFileTask(string fileName, string userInput)
         {
-            string timestamp = System.DateTime.Now;
+            string timestamp = System.DateTime.Now.ToString();
             string fileText = userInput + " : " + timestamp;
             // using StreamWriter streamWriter = new(fileName, append: true);
             // await streamWriter.WriteLineAsync(fileText);
