@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using Tetris.Models;
 
 namespace Tetris
 {
@@ -20,7 +21,7 @@ namespace Tetris
         private int ticksSinceAutoMove = 0;
 
         private ReplayManager replayManager;
-        private string filenameTimestamp = System.DateTime.Now();
+        private string filenameTimestamp = System.DateTime.UtcNow.ToString();
 
         public PlayField(int width, int height)
         {

@@ -67,10 +67,10 @@
                     <DataTemplate>
                         <Viewbox >
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox BorderBrush="{StaticResource TextColor}" Foreground="{StaticResource TextColor}">
+                                <CheckBox Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" BorderBrush="{StaticResource TextColor}" Foreground="{StaticResource TextColor}">
                                     <TextBlock Foreground="{StaticResource TextColor}"  Text="{Binding Filename}"/>
                                 </CheckBox>
-                                <Button HorizontalAlignment="Stretch" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}" VerticalAlignment="Stretch">
+                                <Button Click="ReplayViewButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextColor}" Background="{StaticResource MainColor}" VerticalAlignment="Stretch">
                                     <TextBlock Foreground="{StaticResource TextColor}"  Text="View"/>
                                 </Button>
                             </StackPanel>

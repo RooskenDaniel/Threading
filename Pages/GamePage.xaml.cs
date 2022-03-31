@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
+using Tetris.Models;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
 
 //todo:
 //convert strings to resources
@@ -34,7 +36,7 @@ namespace Tetris.Pages
         private readonly PlayField playField;
         private double gameTime = 0;
 
-        private bool isReplay = false;
+        private Replay replay;
         public GamePage()
         {
             InitializeComponent();
@@ -63,6 +65,19 @@ namespace Tetris.Pages
             //keeps UI responsive during the game loop
             new Thread(GameLoop).Start();
         }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            Replay replay = (Replay) e.Parameter;
+            if(replay != null)
+            {
+                //enable replay mode
+                this.replay = replay;
+            }
+        }
+
         #region Initialization helpers
         private void AddPlayFieldBorders(int width, int height)
         {
@@ -201,51 +216,61 @@ namespace Tetris.Pages
         #endregion
 
 
+
         private void CoreWindow_KeyDown(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs e)
         {
             {
-                switch (e.VirtualKey)
+                if (e.VirtualKey == VirtualKey.Escape)
                 {
-                    case VirtualKey.Escape:
-                        Frame.Navigate(typeof(MainMenuPage));
-                        break;
-                    case VirtualKey.Left:
-                    case VirtualKey.A:
-                    case VirtualKey.GamepadDPadLeft:
-                    case VirtualKey.GamepadLeftThumbstickLeft:
-                        playField.MovePieceLeft();
-                        break;
-                    case VirtualKey.Right:
-                    case VirtualKey.D:
-                    case VirtualKey.GamepadDPadRight:
-                    case VirtualKey.GamepadLeftThumbstickRight:
-                        playField.MovePieceRight();
-                        break;
-                    case VirtualKey.Up:
-                    case VirtualKey.W:
-                    case VirtualKey.GamepadDPadUp:
-                    case VirtualKey.GamepadLeftThumbstickUp:
-                        playField.HardDrop();
-                        break;
-                    case VirtualKey.Down:
-                    case VirtualKey.S:
-                    case VirtualKey.GamepadDPadDown:
-                    case VirtualKey.GamepadLeftThumbstickDown:
-                        playField.SoftDrop();
-                        break;
-                    case VirtualKey.Q:
-                    case VirtualKey.GamepadA:
-                        playField.RotatePieceRight();
-                        break;
-                    case VirtualKey.E:
-                    case VirtualKey.GamepadB:
-                        playField.RotatePieceLeft();
-                        break;
-                    case VirtualKey.Space:
-                    case VirtualKey.GamepadRightShoulder:
-                        playField.HoldPiece();
-                        break;
+                    Frame.Navigate(typeof(MainMenuPage));
+                    return;
                 }
+
+                if (replay == null)
+                {
+                    switch (e.VirtualKey)
+                    {
+                        case VirtualKey.Left:
+                        case VirtualKey.A:
+                        case VirtualKey.GamepadDPadLeft:
+                        case VirtualKey.GamepadLeftThumbstickLeft:
+                            playField.MovePieceLeft();
+                            break;
+                        case VirtualKey.Right:
+                        case VirtualKey.D:
+                        case VirtualKey.GamepadDPadRight:
+                        case VirtualKey.GamepadLeftThumbstickRight:
+                            playField.MovePieceRight();
+                            break;
+                        case VirtualKey.Up:
+                        case VirtualKey.W:
+                        case VirtualKey.GamepadDPadUp:
+                        case VirtualKey.GamepadLeftThumbstickUp:
+                            playField.HardDrop();
+                            break;
+                        case VirtualKey.Down:
+                        case VirtualKey.S:
+                        case VirtualKey.GamepadDPadDown:
+                        case VirtualKey.GamepadLeftThumbstickDown:
+                            playField.SoftDrop();
+                            break;
+                        case VirtualKey.Q:
+                        case VirtualKey.GamepadA:
+                            playField.RotatePieceRight();
+                            break;
+                        case VirtualKey.E:
+                        case VirtualKey.GamepadB:
+                            playField.RotatePieceLeft();
+                            break;
+                        case VirtualKey.Space:
+                        case VirtualKey.GamepadRightShoulder:
+                            playField.HoldPiece();
+                            break;
+                    }
+                }
+            }
+            {
+
             }
         }
 
