@@ -72,7 +72,7 @@ namespace Tetris
             }
         }
 
-        public void RotateRight()
+        public void RotateLeft()
         {
             if (!HasPostion())
             {
@@ -105,7 +105,7 @@ namespace Tetris
             }
         }
 
-        public void RotateLeft()
+        public void RotateRight()
         {
             if (!HasPostion())
             {
