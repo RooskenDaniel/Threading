@@ -186,6 +186,10 @@ namespace Tetris.Pages
                     ResizeGameOverText();
                 }
             }
+
+            //Score
+            TextBlock scoreTextBlock = FindName("ScoreValue") as TextBlock;
+            scoreTextBlock.Text = playField.score.ToString();
         }
 
         private void DrawPreviewPiece(PiecePreviewUserControl preview, Piece piece)
@@ -300,6 +304,7 @@ namespace Tetris.Pages
             Canvas.SetLeft(panel, left);
 
         }
+
 
         //binding with ActualHeight or ActualWidth doesn't work in UWP
         //So we need to use a sizeChanged handler to mantain it's aspect ratio

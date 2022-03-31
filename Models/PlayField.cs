@@ -19,6 +19,7 @@ namespace Tetris
 
         private int ticksSinceAutoMove = 0;
 
+        public int score = 0;
         private ReplayManager replayManager;
         private string filenameTimestamp = System.DateTime.Now();
 
@@ -157,8 +158,51 @@ namespace Tetris
                     grid[location.x, location.y] = piece.cellColor;
                 }
             }
+            clearLines(0);
             SpawnNextPiece();
             replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+        }
+
+        private void clearLines(int linesCleared)
+        {
+            for (int x = 0; x < grid.GetLength(1); x++)
+            {
+                bool rowISFilled = true;
+                for (int y = 0; y < grid.GetLength(0); y++)
+                {
+                    if (grid[y, x] == CellState.EMPTY)
+                    {
+                        rowISFilled = false;
+                        break;
+                    }
+                }
+                if (rowISFilled == true)
+                {
+                    for (int y = 0; y < grid.GetLength(0); y++)
+                    {
+                        for (int xMover = x; xMover < grid.GetLength(1) - 1; xMover++)
+                        {
+                            grid[y, xMover] = grid[y, xMover + 1];
+                        }
+                    }
+                    clearLines(linesCleared + 1);
+                }
+            }
+            switch (linesCleared)
+            {
+                case 1:
+                    score += 40;
+                    break;
+                case 2:
+                    score += 100;
+                    break;
+                case 3:
+                    score += 300;
+                    break;
+                case 4:
+                    score += 1200;
+                    break;
+            }
         }
 
         private void MovePieceDown(Piece piece, int distance)
