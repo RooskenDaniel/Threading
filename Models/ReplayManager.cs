@@ -34,8 +34,9 @@ namespace Tetris.Models
         {
             string timestamp = System.DateTime.Now;
             string fileText = userInput + " : " + timestamp;
-            using StreamWriter streamWriter = new(fileName, append: true);
-            await streamWriter.WriteLineAsync(fileText);
+            // using StreamWriter streamWriter = new(fileName, append: true);
+            // await streamWriter.WriteLineAsync(fileText);
+            await File.AppendAllTextAsync(fileName, fileText);
         }
 
         public void startReplay()
