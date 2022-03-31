@@ -33,6 +33,8 @@ namespace Tetris.Pages
 
         private readonly PlayField playField;
         private double gameTime = 0;
+
+        private bool isReplay = false;
         public GamePage()
         {
             InitializeComponent();
