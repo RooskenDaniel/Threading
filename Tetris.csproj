@@ -126,6 +126,7 @@
     <Compile Include="Models\PieceShape.cs" />
     <Compile Include="Models\PlayField.cs" />
     <Compile Include="Models\Replay.cs" />
+    <Compile Include="Models\ReplayManager.cs" />
     <Compile Include="Pages\MainMenuPage.xaml.cs">
       <DependentUpon>MainMenuPage.xaml</DependentUpon>
     </Compile>
