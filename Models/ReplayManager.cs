@@ -9,6 +9,12 @@ namespace Tetris.Models
 {
     class ReplayManager
     {
+
+        public ReplayManager()
+        {
+
+        }
+
         public async void loadFromFile(string path)
         {
             Task task = new Task (() => loadFromFileTask(path));
@@ -27,9 +33,14 @@ namespace Tetris.Models
         public async Task writeToFileTask(string fileName, string userInput)
         {
             string timestamp = System.DateTime.Now;
-            string fileText = userInput + " : " + userInput;
+            string fileText = userInput + " : " + timestamp;
             using StreamWriter streamWriter = new(fileName, append: true);
             await streamWriter.WriteLineAsync(fileText);
+        }
+
+        public void startReplay()
+        {
+
         }
     }
 }
