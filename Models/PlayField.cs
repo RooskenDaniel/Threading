@@ -106,12 +106,12 @@ namespace Tetris
 
         public void SoftDrop()
         {
-            //todo
+            MovePieceDown(currentPiece, 1);
         }
 
         public void HardDrop()
         {
-            //todo
+            MovePieceDown(currentPiece, 19);
         }
 
         public void HoldPiece()
