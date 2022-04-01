@@ -52,8 +52,27 @@ namespace Tetris.Models
             return replay;
         }
 
-        //todo get all from given dir
+        public static async Task<List<Replay>> GetReplaysFromDir(String dirPath)
+        {
+            List<Replay> replays = new List<Replay>();
+            String[] paths = Directory.GetFiles(dirPath);
+            foreach (String path in paths)
+            {
+                try
+                {
+                    replays.Add(await GetReplayFromFile(path));
+                }catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
 
-        //todo get all from storage folder
+            }
+            return replays;
+        }
+
+        public static async Task<List<Replay>> getAllFromStorageFolder()
+        {
+            return await GetReplaysFromDir(Windows.Storage.ApplicationData.Current.LocalFolder.Path);
+        }
     }
 }

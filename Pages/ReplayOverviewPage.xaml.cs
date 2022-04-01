@@ -30,30 +30,18 @@ namespace Tetris.Pages
         {
             this.InitializeComponent();
             ListView listView = FindName("ReplayListView") as ListView;
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
             listView.ItemsSource = LoadedReplays;
 
         }
 
         private void loadFileButton_Click(object sender, RoutedEventArgs e)
         {
+            loadReplays();
+        }
 
+        private async void loadReplays()
+        {
+            LoadedReplays = await ReplayManager.getAllFromStorageFolder();
         }
 
         private void startSimSingleThreadButton_Click(object sender, RoutedEventArgs e)
