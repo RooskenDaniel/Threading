@@ -25,34 +25,23 @@ namespace Tetris.Pages
     {
 
         private List<Replay> LoadedReplays = new List<Replay>();
+        private List<Replay> selectedReplays = new List<Replay>();
         public ReplayOverviewPage()
         {
             this.InitializeComponent();
             ListView listView = FindName("ReplayListView") as ListView;
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
-            LoadedReplays.Add(new Replay("aaaaaa"));
             listView.ItemsSource = LoadedReplays;
 
         }
 
         private void loadFileButton_Click(object sender, RoutedEventArgs e)
         {
+            loadReplays();
+        }
 
+        private async void loadReplays()
+        {
+            LoadedReplays = await ReplayManager.getAllFromStorageFolder();
         }
 
         private void startSimSingleThreadButton_Click(object sender, RoutedEventArgs e)
@@ -72,6 +61,28 @@ namespace Tetris.Pages
             {
                 rootFrame.GoBack();
             }
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkbox = (CheckBox)sender;
+            Replay replay = checkbox.DataContext as Replay;
+            selectedReplays.Add((Replay)replay);
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkbox = (CheckBox)sender;
+            Replay replay = checkbox.DataContext as Replay;
+            selectedReplays.Remove((Replay)replay);
+        }
+
+        private void ReplayViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            Replay replay = button.DataContext as Replay;
+            Frame.Navigate(typeof(GamePage), replay);
+
         }
     }
 }
