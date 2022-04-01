@@ -21,10 +21,14 @@ namespace Tetris
         private int ticksSinceAutoMove = 0;
 
         public int score = 0;
-        private ReplayManager replayManager;
         private string filenameTimestamp = System.DateTime.Now.ToString();
 
         private bool holdLock = false;
+
+        private double timeStamp = 0;
+
+        public Replay loadedReplay { get; set; } = null;
+        public bool replayPlaybackMode = false;
 
         public PlayField(int width, int height)
         {
@@ -53,10 +57,12 @@ namespace Tetris
 
         public void Tick(double gameTime)
         {
+            this.timeStamp = gameTime;
             if (ticksSinceAutoMove >= TICKS_PER_AUTO_MOVE)
             {
                 MovePieceDown(currentPiece, 1);
                 ticksSinceAutoMove = 0;
+                RecordEvent(ReplayEventType.AUTO_MOVE);
             }
             else
             {
@@ -80,7 +86,7 @@ namespace Tetris
             {
                 currentPiece.MoveX(1);
             }
-            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            RecordEvent(ReplayEventType.RIGHT);
         }
 
         public void MovePieceLeft()
@@ -98,31 +104,31 @@ namespace Tetris
             { 
                 currentPiece.MoveX(-1);
             }
-            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            RecordEvent(ReplayEventType.LEFT);
         }
 
         public void RotatePieceLeft()
         {
             currentPiece.RotateLeft();
-            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            RecordEvent(ReplayEventType.ROTATE_LEFT);
         }
 
         public void RotatePieceRight()
         {
             currentPiece.RotateRight();
-            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            RecordEvent(ReplayEventType.ROTATE_RIGHT);
         }
 
         public void SoftDrop()
         {
             MovePieceDown(currentPiece, 1);
-            replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            RecordEvent(ReplayEventType.SOFT_DROP);
         }
 
         public void HardDrop()
         {
             MovePieceDown(currentPiece, 19);
-            replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            RecordEvent(ReplayEventType.HARD_DROP);
         }
 
         public void HoldPiece()
@@ -145,7 +151,7 @@ namespace Tetris
                     SpawnNextPiece();
                 }
             }
-            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            RecordEvent(ReplayEventType.HOLD);
         }
 
         private void SpawnNextPiece()
@@ -178,7 +184,6 @@ namespace Tetris
             }
             clearLines(0);
             SpawnNextPiece();
-            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         private void clearLines(int linesCleared)
@@ -223,6 +228,25 @@ namespace Tetris
             }
         }
 
+        //todo handle exceptions
+        private async void RecordEvent(ReplayEventType replayEventType, object replayEventData)
+        {
+            if (!replayPlaybackMode)
+            {
+                if (this.loadedReplay == null)
+                {
+                    this.loadedReplay =  await ReplayManager.CreateReplay();
+                }
+                ReplayEvent replayEvent = new ReplayEvent(this.timeStamp, replayEventType, replayEventData);
+                await ReplayManager.WriteEventToJson(replayEvent, this.loadedReplay);
+            }
+        }
+
+        private void RecordEvent(ReplayEventType replayEventType)
+        {
+            RecordEvent(replayEventType, null);
+        }
+
         private void MovePieceDown(Piece piece, int distance)
         {
             piece.MoveY(-distance);
@@ -243,5 +267,6 @@ namespace Tetris
                 LandPiece(piece);
             }
         }
+
     }
 }

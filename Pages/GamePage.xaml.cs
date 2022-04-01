@@ -36,7 +36,7 @@ namespace Tetris.Pages
         private readonly PlayField playField;
         private double gameTime = 0;
 
-        private Replay replay;
+        private bool replayMode;
         public GamePage()
         {
             InitializeComponent();
@@ -74,7 +74,9 @@ namespace Tetris.Pages
             if(replay != null)
             {
                 //enable replay mode
-                this.replay = replay;
+                replayMode = true;
+                playField.replayPlaybackMode = true;
+                playField.loadedReplay = replay;
             }
         }
 
@@ -137,8 +139,6 @@ namespace Tetris.Pages
             }
         }
         #endregion
-
-        //todo thread managment / gameloop should probably not be a pages responsibility
         #region Game loop
         private void GameLoop()
         {
@@ -227,10 +227,11 @@ namespace Tetris.Pages
                 if (e.VirtualKey == VirtualKey.Escape)
                 {
                     Frame.Navigate(typeof(MainMenuPage));
+                    ReplayManager.disposeWritingStream();
                     return;
                 }
 
-                if (replay == null)
+                if (!replayMode)
                 {
                     switch (e.VirtualKey)
                     {

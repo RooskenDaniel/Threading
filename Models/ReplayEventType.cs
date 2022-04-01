@@ -8,7 +8,14 @@ namespace Tetris.Models
 {
     public enum ReplayEventType
     {
-        PRESSED_KEY,
+        SOFT_DROP,
+        HARD_DROP,
+        LEFT,
+        RIGHT,
+        ROTATE_LEFT,
+        ROTATE_RIGHT,
+        HOLD,
+        AUTO_MOVE,
         PIECE_SPAWNED
     }
 }
