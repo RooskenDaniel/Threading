@@ -57,6 +57,14 @@ namespace Tetris
 
         public void Tick(double gameTime)
         {
+            if (replayPlaybackMode)
+            {
+                doReplayAction();
+            }
+            else
+            {
+
+            }
             this.timeStamp = gameTime;
             if (ticksSinceAutoMove >= TICKS_PER_AUTO_MOVE)
             {
@@ -67,6 +75,46 @@ namespace Tetris
             else
             {
                 ticksSinceAutoMove++;
+            }
+        }
+
+        private void doReplayAction()
+        {
+            ReplayEvent nextEvent = loadedReplay.Events[0];
+            if (nextEvent.Timestamp.Equals(this.timeStamp))
+            {
+                switch (nextEvent.EventType)
+                {
+                    case ReplayEventType.AUTO_MOVE:
+                        MovePieceDown(currentPiece, 1);
+                        break;
+                    case ReplayEventType.LEFT:
+                        MovePieceLeft();
+                        break;
+                    case ReplayEventType.RIGHT:
+                        MovePieceRight();
+                        break;
+                    case ReplayEventType.ROTATE_RIGHT:
+                        RotatePieceRight();
+                        break;
+                    case ReplayEventType.ROTATE_LEFT:
+                        RotatePieceLeft();
+                        break;
+                    case ReplayEventType.HOLD:
+                        HoldPiece();
+                        break;
+                    case ReplayEventType.HARD_DROP:
+                        HardDrop();
+                        break;
+                    case ReplayEventType.SOFT_DROP:
+                        SoftDrop();
+                        break;
+                    case ReplayEventType.PIECE_SPAWNED:
+                        currentPiece = nextEvent.Data as Piece;
+                        currentPiece.SetPosition(4, grid.GetLength(1));
+                        holdLock = false;
+                        break;
+                }
             }
         }
 
@@ -166,6 +214,7 @@ namespace Tetris
             //set spawn position
             currentPiece.SetPosition(4, grid.GetLength(1));
             holdLock = false;
+            RecordEvent(ReplayEventType.PIECE_SPAWNED, currentPiece);
         }
 
         private void LandPiece(Piece piece)
@@ -247,7 +296,6 @@ namespace Tetris
         {
             RecordEvent(replayEventType, null);
         }
-
         private void MovePieceDown(Piece piece, int distance)
         {
             piece.MoveY(-distance);
