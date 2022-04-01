@@ -34,7 +34,7 @@ namespace Tetris.Models
                 String path = storageFolder.Path + "/" + replay.Filename;
                 writingFileStream = File.OpenWrite(path);
             }
-            await JsonSerializer.SerializeAsync(writingFileStream, replay);
+            await JsonSerializer.SerializeAsync(writingFileStream, replayEvent);
         }
 
         public static void disposeWritingStream()

@@ -180,6 +180,7 @@ namespace Tetris
                 else
                 {
                     grid[location.x, location.y] = piece.cellColor;
+                //todo fix index out of range
                 }
             }
             clearLines(0);
