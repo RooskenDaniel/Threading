@@ -9,10 +9,12 @@ namespace Tetris.Models
     public class Replay
     {
         public string Filename { get; set; }
+        public List<ReplayEvent> Events { get; set; }
 
         public Replay(string filename)
         {
             Filename = filename;
+            Events = new List<ReplayEvent>();
         }
     }
 }

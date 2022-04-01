@@ -3,45 +3,35 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Tetris.Models
 {
     class ReplayManager
     {
-
-        public ReplayManager()
-        {
-
-        }
-
-        public async void loadFromFile(string path)
-        {
-            Task task = new Task (() => loadFromFileTask(path));
-        }
-
-        public async void writeToFile(string fileName, string userInput)
-        {
-            Task task = new Task (() => writeToFileTask(fileName, userInput));
-        }
-
-        public async Task loadFromFileTask(string path)
-        {
-            string text = await File.ReadAllTextAsync(path);
-        }
-
-        public async Task writeToFileTask(string fileName, string userInput)
+        public Replay createReplay()
         {
             string timestamp = DateTime.Now.ToString();
-            string fileText = userInput + " : " + timestamp;
-            // using StreamWriter streamWriter = new(fileName, append: true);
-            // await streamWriter.WriteLineAsync(fileText);
-            await File.AppendAllTextAsync(fileName, fileText);
+            File.Create("replays/" + timestamp);
+            return new Replay(timestamp);
         }
 
-        public void startReplay()
+        public async Task writeEventToJson(ReplayEvent replayEvent, Replay replay)
         {
+            replay.Events.Add(replayEvent);
 
+            String path = "replays/" + replay.Filename;
+            FileStream stream = File.OpenWrite(path);
+            await JsonSerializer.SerializeAsync(stream, replay);
+            stream.Dispose();
+        }
+
+        public async Task<Replay> getReplayFromFile(String path)
+        {
+            FileStream stream = File.OpenRead(path);
+            Replay replay = await JsonSerializer.DeserializeAsync<Replay>(stream);
+            return replay;
         }
     }
 }
