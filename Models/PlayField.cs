@@ -115,21 +115,18 @@ namespace Tetris
 
         public void SoftDrop()
         {
-            //todo
-
-            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            MovePieceDown(currentPiece, 1);
+            replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         public void HardDrop()
         {
-            //todo
-
-            //replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            MovePieceDown(currentPiece, 19);
+            replayManager.writeToFile(filenameTimestamp, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         public void HoldPiece()
         {
-            //todo
             if(currentPiece != null && !holdLock)
             {
                 if(HeldPiece != null)
