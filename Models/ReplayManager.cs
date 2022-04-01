@@ -35,7 +35,7 @@ namespace Tetris.Models
                 writingFileStream = new StreamWriter(path, false);
             }
             String json = JsonSerializer.Serialize(replayEvent);
-            writingFileStream.Write(json);
+            await writingFileStream.WriteAsync(json);
         }
 
         public static void disposeWritingStream()
