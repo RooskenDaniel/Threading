@@ -11,7 +11,7 @@ namespace Tetris.Models
 {
     static class ReplayManager {
 
-        private static FileStream writingFileStream;
+        private static StreamWriter writingFileStream;
         private static Replay replayToWirte;
         public static async Task<Replay> CreateReplay()
 
@@ -32,9 +32,10 @@ namespace Tetris.Models
                 replayToWirte = replay;
                 Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
                 String path = storageFolder.Path + "/" + replay.Filename;
-                writingFileStream = File.OpenWrite(path);
+                writingFileStream = new StreamWriter(path, false);
             }
-            await JsonSerializer.SerializeAsync(writingFileStream, replayEvent);
+            String json = JsonSerializer.Serialize(replayEvent);
+            writingFileStream.Write(json);
         }
 
         public static void disposeWritingStream()

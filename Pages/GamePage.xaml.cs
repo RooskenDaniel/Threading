@@ -227,7 +227,6 @@ namespace Tetris.Pages
                 if (e.VirtualKey == VirtualKey.Escape)
                 {
                     Frame.Navigate(typeof(MainMenuPage));
-                    ReplayManager.disposeWritingStream();
                     return;
                 }
 
